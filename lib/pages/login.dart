@@ -1,0 +1,95 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:sefatapp2/components/LoginForm.dart';
+
+class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Map<String, dynamic>> loginButtons = [
+      {
+        'label': 'Google ile daxil olun',
+        'color': const Color.fromARGB(210, 234, 239, 245),
+        'icon': 'Google',
+      },
+      {
+        'label': 'Facebook ile daxil olun',
+        'color': const Color.fromARGB(210, 234, 239, 245),
+        'icon': 'Facebook',
+      },
+      {
+        'label': 'Apple ile daxil olun',
+        'color': const Color.fromARGB(210, 234, 239, 245),
+        'icon': 'Apple',
+      },
+    ];
+
+    return Scaffold(
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: IntrinsicHeight(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 20),
+                      GestureDetector(
+                        onTap: () => context.go('/'),
+                        child: Image.asset('assets/logo.png'),
+                      ),
+                      const SizedBox(height: 20),
+                      LoginForm(),
+                      const Spacer(),
+                      Row(
+                        children: const <Widget>[
+                          Expanded(child: Divider(thickness: 1)),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Text("və ya"),
+                          ),
+                          Expanded(child: Divider(thickness: 1)),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Column(
+                        children: loginButtons.map((button) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: button['color'],
+                                foregroundColor: Colors.black,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                minimumSize: const Size(double.infinity, 50),
+                              ),
+                              onPressed: () {},
+                              icon: Image.asset(
+                                "assets/${button['icon']}.png",
+                                height: 24,
+                              ),
+                              label: Text(
+                                button['label'],
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
