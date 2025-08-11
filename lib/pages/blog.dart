@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:openapi/openapi.dart' as backend;
-import 'package:sefatapp2/services/api.dart';
+import 'package:safatapp/services/api.dart';
 
 class BlogListPage extends StatefulWidget {
   const BlogListPage({super.key});
@@ -25,7 +25,7 @@ class _BlogListPageState extends State<BlogListPage> {
     try {
       final api = ApiService().api;
 
-      final response = await api.getBlogsApi().getAllApiBlogsGet();
+      final response = await api.getBlogsApi().getAllBlogsApiBlogsGet();
       setState(() {
         blogs = (response.data?.toList() ?? []);
         loading = false;

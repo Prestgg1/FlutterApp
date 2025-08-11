@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:openapi/openapi.dart' as backend;
-import 'package:sefatapp2/components/clinic_card.dart';
-import 'package:sefatapp2/services/api.dart';
+import 'package:safatapp/components/clinic_card.dart';
+import 'package:safatapp/services/api.dart';
 import 'package:go_router/go_router.dart';
 
 class ClinicHorizontalList extends StatefulWidget {
@@ -28,7 +28,7 @@ class _ClinicHorizontalListState extends State<ClinicHorizontalList> {
   Future<void> fetchClinics() async {
     setState(() => loading = true);
     try {
-      final response = await api.getClinicsApi().getClinicsApiClinicsGet(
+      final response = await api.getClinicApi().listClinicsApiClinicGet(
         limit: 8,
       );
       setState(() {
@@ -36,7 +36,6 @@ class _ClinicHorizontalListState extends State<ClinicHorizontalList> {
         loading = false;
       });
     } catch (e) {
-      setState(() => loading = false);
       // Lazım gələrsə, səhv mesajı da göstərə bilərsən
     }
   }

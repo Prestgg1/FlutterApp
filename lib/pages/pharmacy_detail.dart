@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:openapi/openapi.dart' as backend;
-import 'package:sefatapp2/components/expandable.dart';
-import 'package:sefatapp2/components/review_input.dart';
-import 'package:sefatapp2/components/reviews_section.dart';
-import 'package:sefatapp2/components/simple_stats.dart';
-import 'package:sefatapp2/services/api.dart';
+import 'package:safatapp/components/expandable.dart';
+import 'package:safatapp/components/review_input.dart';
+import 'package:safatapp/components/reviews_section.dart';
+import 'package:safatapp/components/simple_stats.dart';
+import 'package:safatapp/services/api.dart';
 
 class PharmacyDetailPage extends StatefulWidget {
   final int id;

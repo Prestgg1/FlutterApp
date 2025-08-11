@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sefatapp2/components/LoginForm.dart';
+import 'package:safatapp/components/LoginForm.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -81,6 +81,27 @@ class LoginPage extends StatelessWidget {
                             ),
                           );
                         }).toList(),
+                      ),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            "Hesabınız yoxdur?",
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          SizedBox(width: 2),
+                          TextButton(
+                            onPressed: () => context.go('/register'),
+                            child: Text(
+                              "Qeydiyyatdan keç",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

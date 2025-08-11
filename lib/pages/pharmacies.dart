@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:openapi/openapi.dart' as backend;
-import 'package:sefatapp2/components/pharmacy_card.dart';
-import 'package:sefatapp2/components/search_input.dart';
-import 'package:sefatapp2/services/api.dart';
+import 'package:safatapp/components/pharmacy_card.dart';
+import 'package:safatapp/components/search_input.dart';
+import 'package:safatapp/services/api.dart';
 
 class PharmaciesListPage extends StatefulWidget {
   const PharmaciesListPage({super.key});
@@ -69,6 +69,7 @@ class PharmaciesListPageState extends State<PharmaciesListPage> {
             onChanged: onSearchChanged,
           ),
         ),
+        Text(MediaQuery.of(context).size.height.toString()),
         Text(
           "Apteklər",
           style: TextStyle(
@@ -95,11 +96,13 @@ class PharmaciesListPageState extends State<PharmaciesListPage> {
             child: GridView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               itemCount: pharmacies.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
-                childAspectRatio: 0.75,
+                childAspectRatio: MediaQuery.of(context).size.height > 850
+                    ? 0.75
+                    : 0.6,
               ),
               itemBuilder: (context, index) {
                 final pharmacy = pharmacies[index];

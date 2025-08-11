@@ -119,6 +119,8 @@ class _DoctorCardState extends State<DoctorCard> {
               const SizedBox(height: 8),
               Text(
                 "Dr. ${user.name}",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14,

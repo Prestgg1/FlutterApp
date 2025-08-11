@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:openapi/openapi.dart' as backend;
-import 'package:sefatapp2/components/ratingStars.dart';
+import 'package:safatapp/components/ratingStars.dart';
 
 class ClinicCard extends StatefulWidget {
   final backend.ClinicsResponse clinic;
@@ -61,6 +61,8 @@ class _ClinicCardState extends State<ClinicCard> {
               const SizedBox(height: 8),
               Text(
                 user.name,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14,

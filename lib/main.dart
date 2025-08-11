@@ -1,22 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:sefatapp2/layouts/main_layout.dart';
-import 'package:sefatapp2/pages/abouts.dart';
-import 'package:sefatapp2/pages/blog.dart';
-import 'package:sefatapp2/pages/blogdetail.dart';
-import 'package:sefatapp2/pages/clinic_detail.dart';
-import 'package:sefatapp2/pages/clinics.dart';
-import 'package:sefatapp2/pages/contact.dart';
-import 'package:sefatapp2/pages/doctor_category.dart';
-import 'package:sefatapp2/pages/doctor_detail.dart';
-import 'package:sefatapp2/pages/doctors.dart';
-import 'package:sefatapp2/pages/home.dart';
-import 'package:sefatapp2/pages/pharmacies.dart';
-import 'package:sefatapp2/pages/pharmacy_detail.dart';
+import 'package:safatapp/layouts/main_layout.dart';
+import 'package:safatapp/pages/abouts.dart';
+import 'package:safatapp/pages/appointment_reason.dart';
+import 'package:safatapp/pages/blog.dart';
+import 'package:safatapp/pages/blogdetail.dart';
+import 'package:safatapp/pages/clinic_detail.dart';
+import 'package:safatapp/pages/clinics.dart';
+import 'package:safatapp/pages/contact.dart';
+import 'package:safatapp/pages/doctor_appointment.dart';
+import 'package:safatapp/pages/doctor_appointment_form.dart';
+import 'package:safatapp/pages/doctor_category.dart';
+import 'package:safatapp/pages/doctor_detail.dart';
+import 'package:safatapp/pages/doctors.dart';
+import 'package:safatapp/pages/favorites.dart';
+import 'package:safatapp/pages/forgot-password.dart';
+import 'package:safatapp/pages/home.dart';
+import 'package:safatapp/pages/otp.dart';
+import 'package:safatapp/pages/pharmacies.dart';
+import 'package:safatapp/pages/pharmacy_detail.dart';
+import 'package:safatapp/pages/products.dart';
+import 'package:safatapp/pages/register.dart';
+import 'package:safatapp/pages/reset_password.dart';
+import 'package:safatapp/services/auth/authevent.dart';
 import "pages/login.dart";
 import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:safatapp/services/auth/authbloc.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final authBloc = AuthBloc();
+  authBloc.add(AuthCheck());
+
+  runApp(BlocProvider(create: (context) => authBloc, child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -62,6 +79,12 @@ class MyApp extends StatelessWidget {
                 ),
               ),
               GoRoute(
+                path: '/shop/:id',
+                builder: (context, state) => ProductsListPage(
+                  pharmacyId: int.parse(state.pathParameters['id']!),
+                ),
+              ),
+              GoRoute(
                 path: '/clinic/:id',
                 builder: (context, state) => ClinicDetailPage(
                   id: int.parse(state.pathParameters['id']!),
@@ -85,6 +108,22 @@ class MyApp extends StatelessWidget {
                 builder: (context, state) => const ClinicsListPage(),
               ),
               GoRoute(
+                path: '/doctor-appointment',
+                builder: (context, state) => const DoctorAppointmentPage(),
+              ),
+              GoRoute(
+                path: '/doctor-appointment-form',
+                builder: (context, state) => const DoctorAppointmentForm(),
+              ),
+              GoRoute(
+                path: '/appointment-reason',
+                builder: (context, state) => const AppointmentReason(),
+              ),
+              GoRoute(
+                path: '/favorites',
+                builder: (context, state) => const FavoritesPage(),
+              ),
+              GoRoute(
                 path: '/pharmacies',
                 builder: (context, state) => const PharmaciesListPage(),
               ),
@@ -97,6 +136,20 @@ class MyApp extends StatelessWidget {
           GoRoute(
             path: '/login',
             builder: (context, state) => const LoginPage(),
+          ),
+          GoRoute(
+            path: '/register',
+            builder: (context, state) => const RegisterPage(),
+          ),
+          GoRoute(
+            path: '/forgot-password',
+            builder: (context, state) => const ForgotPasswordPage(),
+          ),
+
+          GoRoute(path: '/otp', builder: (context, state) => const OtpPage()),
+          GoRoute(
+            path: '/reset-password',
+            builder: (context, state) => const PasswordResetPage(),
           ),
         ],
       ),

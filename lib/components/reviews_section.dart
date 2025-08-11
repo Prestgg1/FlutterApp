@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sefatapp2/components/ratingStars.dart';
-import 'package:sefatapp2/services/api.dart';
+import 'package:safatapp/components/ratingStars.dart';
+import 'package:safatapp/services/api.dart';
 import 'package:openapi/openapi.dart' as backend;
 
 class Reviews extends StatefulWidget {

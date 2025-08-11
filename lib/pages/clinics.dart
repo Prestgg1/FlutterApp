@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:openapi/openapi.dart' as backend;
-import 'package:sefatapp2/components/clinic_card.dart';
-import 'package:sefatapp2/components/search_input.dart';
-import 'package:sefatapp2/services/api.dart';
+import 'package:safatapp/components/clinic_card.dart';
+import 'package:safatapp/components/search_input.dart';
+import 'package:safatapp/services/api.dart';
 
 class ClinicsListPage extends StatefulWidget {
   const ClinicsListPage({super.key});
@@ -44,7 +44,7 @@ class ClinicsListPageState extends State<ClinicsListPage> {
     setState(() => loading = true);
     try {
       final api = ApiService().api;
-      final response = await api.getClinicsApi().getClinicsApiClinicsGet(
+      final response = await api.getClinicApi().listClinicsApiClinicGet(
         search: searchQuery.trim().isEmpty ? null : searchQuery,
       );
       setState(() {
@@ -93,11 +93,13 @@ class ClinicsListPageState extends State<ClinicsListPage> {
             child: GridView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               itemCount: clinics.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
-                childAspectRatio: 0.75,
+                childAspectRatio: MediaQuery.of(context).size.height > 850
+                    ? 0.75
+                    : 0.6,
               ),
               itemBuilder: (context, index) {
                 final clinic = clinics[index];

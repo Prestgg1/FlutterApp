@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:openapi/openapi.dart' as backend;
-import 'package:sefatapp2/components/doctor_card.dart';
-import 'package:sefatapp2/components/search_input.dart';
-import 'package:sefatapp2/services/api.dart';
+import 'package:safatapp/components/doctor_card.dart';
+import 'package:safatapp/components/search_input.dart';
+import 'package:safatapp/services/api.dart';
 
 class DoctorsListPage extends StatefulWidget {
   const DoctorsListPage({super.key});
@@ -65,7 +65,6 @@ class _DoctorsListPageState extends State<DoctorsListPage> {
       children: [
         Padding(
           padding: const EdgeInsets.all(16.0),
-
           child: SearchInput(
             controller: _searchController,
             onChanged: onSearchChanged,
@@ -81,34 +80,35 @@ class _DoctorsListPageState extends State<DoctorsListPage> {
         ),
         const SizedBox(height: 16),
 
-        if (loading)
-          const Expanded(child: Center(child: CircularProgressIndicator()))
-        else if (doctors.isEmpty)
-          const Expanded(
-            child: Center(
-              child: Text(
-                'Həkim tapılmadı',
-                style: TextStyle(fontSize: 18, color: Colors.grey),
-              ),
-            ),
-          )
-        else
-          Expanded(
-            child: GridView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              itemCount: doctors.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
-                childAspectRatio: 0.75,
-              ),
-              itemBuilder: (context, index) {
-                final doctor = doctors[index];
-                return DoctorCard(doctor: doctor);
-              },
-            ),
-          ),
+        // Burada tüm durumlarda Expanded ile sarmalıyoruz:
+        Expanded(
+          child: loading
+              ? const Center(child: CircularProgressIndicator())
+              : doctors.isEmpty
+              ? const Center(
+                  child: Text(
+                    'Həkim tapılmadı',
+                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                  ),
+                )
+              : GridView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  itemCount: doctors.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                    childAspectRatio: MediaQuery.of(context).size.height > 850
+                        ? 0.75
+                        : 0.6,
+                  ),
+                  itemBuilder: (context, index) {
+                    final doctor = doctors[index];
+                    return DoctorCard(doctor: doctor);
+                  },
+                ),
+        ),
+        SizedBox(height: 16),
       ],
     );
   }

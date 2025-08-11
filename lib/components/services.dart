@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class DoctorServices extends StatelessWidget {
   const DoctorServices({super.key});
@@ -8,27 +9,42 @@ class DoctorServices extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Expanded(
-          child: ServiceBox(
-            icon: Icons.receipt,
-            title: "Resept Yazdır",
-            price: "₼ 50 AZN",
+        Flexible(
+          child: GestureDetector(
+            onTap: () {
+              context.go('/appointment-reason');
+            },
+            child: ServiceBox(
+              icon: Icons.receipt,
+              title: "Resept Yazdır",
+              price: "₼ 50 AZN",
+            ),
           ),
         ),
         const SizedBox(width: 8),
-        Expanded(
-          child: ServiceBox(
-            icon: Icons.medical_information,
-            title: "Analiz cavabını yoxla",
-            price: "₼ 50 AZN",
+        Flexible(
+          child: GestureDetector(
+            onTap: () {
+              context.go('/doctor-appointment-form');
+            },
+            child: ServiceBox(
+              icon: Icons.medical_information,
+              title: "Analiz cavabını yoxla",
+              price: "₼ 50 AZN",
+            ),
           ),
         ),
         const SizedBox(width: 8),
-        Expanded(
-          child: ServiceBox(
-            icon: Icons.calendar_today,
-            title: "Rezervasiya təyin et",
-            price: "₼ 50 AZN",
+        Flexible(
+          child: GestureDetector(
+            onTap: () {
+              context.go('/doctor-appointment');
+            },
+            child: ServiceBox(
+              icon: Icons.calendar_today,
+              title: "Rezervasiya təyin et",
+              price: "₼ 50 AZN",
+            ),
           ),
         ),
       ],

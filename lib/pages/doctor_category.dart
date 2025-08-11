@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:openapi/openapi.dart' as backend;
-import 'package:sefatapp2/components/doctor_card.dart';
-import 'package:sefatapp2/components/search_input.dart';
-import 'package:sefatapp2/services/api.dart';
+import 'package:safatapp/components/doctor_card.dart';
+import 'package:safatapp/components/search_input.dart';
+import 'package:safatapp/services/api.dart';
 
 class DoctorCategoryListPage extends StatefulWidget {
   final int id;

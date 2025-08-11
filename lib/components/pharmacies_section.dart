@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:openapi/openapi.dart' as backend;
-import 'package:sefatapp2/components/pharmacy_card.dart';
-import 'package:sefatapp2/services/api.dart';
+import 'package:safatapp/components/pharmacy_card.dart';
+import 'package:safatapp/services/api.dart';
 import 'package:go_router/go_router.dart';
 
 class PharmaciesHorizontalList extends StatefulWidget {

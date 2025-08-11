@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:openapi/openapi.dart' as backend;
-import 'package:sefatapp2/components/doctor_card.dart';
-import 'package:sefatapp2/services/api.dart';
+import 'package:safatapp/components/doctor_card.dart';
+import 'package:safatapp/services/api.dart';
 import 'package:go_router/go_router.dart';
 
 class DoctorHorizontalList extends StatefulWidget {
@@ -33,9 +33,7 @@ class _DoctorHorizontalListState extends State<DoctorHorizontalList> {
         doctors = response.data?.toList() ?? [];
         loading = false;
       });
-    } catch (e) {
-      setState(() => loading = false);
-    }
+    } catch (e) {}
   }
 
   @override

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sefatapp2/components/custom_carousel.dart';
+import 'package:safatapp/components/custom_carousel.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});

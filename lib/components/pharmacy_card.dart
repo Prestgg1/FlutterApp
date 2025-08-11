@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:openapi/openapi.dart' as backend;
 import 'package:go_router/go_router.dart';
+import 'package:safatapp/components/ratingStars.dart';
 
 class PharmacyCard extends StatefulWidget {
   final backend.PharmaciesResponse pharmacy;
@@ -68,6 +69,8 @@ class _PharmacyCardState extends State<PharmacyCard> {
                 color: Colors.grey.shade200,
                 child: Text(
                   user.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
@@ -94,25 +97,7 @@ class _PharmacyCardState extends State<PharmacyCard> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    children: List.generate(5, (index) {
-                      final rating = widget.pharmacy.averageRating;
-                      if (index + 1 <= rating) {
-                        // Tam ulduz
-                        return Icon(Icons.star, color: Colors.yellow, size: 18);
-                      } else if (index + 0.5 <= rating) {
-                        // Yarım ulduz
-                        return Icon(
-                          Icons.star_half,
-                          color: Colors.yellow,
-                          size: 18,
-                        );
-                      } else {
-                        // Boş ulduz
-                        return Icon(Icons.star, color: Colors.grey, size: 18);
-                      }
-                    }),
-                  ),
+                  RatingStars(rating: widget.pharmacy.averageRating.toDouble()),
                   Text(
                     " ${widget.pharmacy.reviewsCount} rəy",
                     style: TextStyle(fontSize: 14, color: Colors.black),

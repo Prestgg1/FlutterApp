@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:openapi/openapi.dart' as backend;
 import 'package:go_router/go_router.dart';
-import 'package:sefatapp2/services/api.dart';
+import 'package:safatapp/services/api.dart';
 
 class DoctorCategoriesWidget extends StatefulWidget {
   const DoctorCategoriesWidget({super.key});
@@ -26,7 +26,7 @@ class _DoctorCategoriesWidgetState extends State<DoctorCategoriesWidget> {
     try {
       final response = await api
           .getDoctorCategoriesApi()
-          .getAllApiDoctorCategoriesGet();
+          .getAllApiAdminDoctorCategoriesGet();
 
       final List<backend.DoctorCategoryResponse> fetchedCategories =
           response.data?.toList() ?? [];

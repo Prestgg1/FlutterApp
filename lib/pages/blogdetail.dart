@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
 import 'package:openapi/openapi.dart' as backend;
+import 'package:safatapp/services/api.dart';
 
 class BlogDetailPage extends StatefulWidget {
   final String slug;
@@ -23,10 +23,8 @@ class _BlogDetailPageState extends State<BlogDetailPage> {
 
   Future<void> fetchBlog() async {
     try {
-      final api = backend.Openapi(
-        dio: Dio(BaseOptions(baseUrl: 'http://127.0.0.1:8000')),
-      );
-      final response = await api.getBlogsApi().getOneApiBlogsSlugGet(
+      final api = ApiService().api;
+      final response = await api.getBlogsApi().getBlogApiBlogsSlugGet(
         slug: widget.slug,
       );
 
