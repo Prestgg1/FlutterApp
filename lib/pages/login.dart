@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:safatapp/components/LoginForm.dart';
+import 'package:safatapp/components/social_login.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -56,33 +57,7 @@ class LoginPage extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 16),
-                      Column(
-                        children: loginButtons.map((button) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8.0),
-                            child: ElevatedButton.icon(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: button['color'],
-                                foregroundColor: Colors.black,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                minimumSize: const Size(double.infinity, 50),
-                              ),
-                              onPressed: () {},
-                              icon: Image.asset(
-                                "assets/${button['icon']}.png",
-                                height: 24,
-                              ),
-                              label: Text(
-                                button['label'],
-                                style: const TextStyle(fontSize: 16),
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-
+                      SocialLogin(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[

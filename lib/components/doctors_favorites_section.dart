@@ -64,22 +64,19 @@ class _DoctorFavoritesHorizontalListState
 
     final token = authState.token;
     try {
+      print("Heaadeerrrler ${api.dio.options.headers}");
+
       final response = await api
           .getFavoritesApi()
-          .getDoctorFavoritesApiFavoritesDoctorGet(
-            headers: {'Authorization': 'Bearer $token'},
-          );
+          .getDoctorFavoritesApiFavoritesDoctorGet();
+
       setState(() {
         doctors = response.data?.toList() ?? [];
         loading = false;
       });
     } catch (e) {
-      print(e);
+      if (!mounted) return;
       setState(() => loading = false);
-      if (e.toString().contains('401')) {
-        context.read<AuthBloc>().add(AuthLogout());
-        context.go('/login');
-      }
     }
   }
 

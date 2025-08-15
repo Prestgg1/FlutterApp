@@ -39,23 +39,17 @@ class _PharmaciesFavoriteHorizontalListState
       return;
     }
 
-    final token = authState.token;
     try {
       final response = await api
           .getFavoritesApi()
-          .getPharmacyFavoritesApiFavoritesPharmacyGet(
-            headers: {'Authorization': 'Bearer $token'},
-          );
+          .getPharmacyFavoritesApiFavoritesPharmacyGet();
       setState(() {
         pharmacies = response.data?.toList() ?? [];
         loading = false;
       });
     } catch (e) {
+      if (!mounted) return;
       setState(() => loading = false);
-      if (e.toString().contains('401')) {
-        context.read<AuthBloc>().add(AuthLogout());
-        context.go('/login');
-      }
     }
   }
 

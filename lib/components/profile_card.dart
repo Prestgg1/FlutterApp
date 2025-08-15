@@ -37,6 +37,8 @@ class _ProfileCardState extends State<ProfileCard> {
         loading = false;
       });
     } catch (e) {
+      if (!mounted) return;
+
       setState(() => loading = false);
     }
   }

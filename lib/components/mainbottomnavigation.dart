@@ -1,25 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class MainBottomNavigationBar extends StatelessWidget {
+class MainBottomNavigationBar extends StatefulWidget {
   const MainBottomNavigationBar({Key? key}) : super(key: key);
 
-  int _getSelectedIndex(BuildContext context) {
-    final location = GoRouter.of(context).state.path;
-    switch (location) {
+  @override
+  State<MainBottomNavigationBar> createState() =>
+      _MainBottomNavigationBarState();
+}
+
+class _MainBottomNavigationBarState extends State<MainBottomNavigationBar> {
+  int _selectedIndex = 0;
+
+  int _getSelectedIndexFromPath(String path) {
+    switch (path) {
       case '/about':
         return 2;
       case '/favorites':
         return 1;
+      case '/profile-edit':
+        return 3;
       default:
         return 0;
     }
   }
 
+  void _onItemTapped(int index) {
+    final router = GoRouter.of(context);
+    final location = router.state.path;
+
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    if (index == 0 && location != '/') {
+      context.push('/');
+    } else if (index == 1 && location != '/favorites') {
+      context.push('/favorites');
+    } else if (index == 2 && location != '/about') {
+      context.push('/about');
+    } else if (index == 3 && location != '/profile-edit') {
+      context.push('/profile-edit');
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Router state dəyişəndə _selectedIndex yenilənir
+    final path = GoRouter.of(context).state.path ?? '/';
+    _selectedIndex = _getSelectedIndexFromPath(path);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final selectedIndex = _getSelectedIndex(context);
-
     return SafeArea(
       child: Stack(
         children: [
@@ -28,18 +62,10 @@ class MainBottomNavigationBar extends StatelessWidget {
               BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
               BottomNavigationBarItem(icon: Icon(Icons.favorite), label: ''),
               BottomNavigationBarItem(icon: Icon(Icons.info), label: ''),
+              BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
             ],
-            currentIndex: selectedIndex,
-            onTap: (index) {
-              final location = GoRouter.of(context).state.path;
-              if (index == 0 && location != '/') {
-                context.push('/');
-              } else if (index == 1 && location != '/favorites') {
-                context.push('/favorites');
-              } else if (index == 2 && location != '/about') {
-                context.push('/about');
-              }
-            },
+            currentIndex: _selectedIndex,
+            onTap: _onItemTapped,
             type: BottomNavigationBarType.fixed,
             showSelectedLabels: false,
             showUnselectedLabels: false,
@@ -54,10 +80,12 @@ class MainBottomNavigationBar extends StatelessWidget {
                   children: [
                     AnimatedAlign(
                       duration: const Duration(milliseconds: 300),
-                      alignment: selectedIndex == 0
+                      alignment: _selectedIndex == 0
                           ? Alignment.centerLeft
-                          : selectedIndex == 1
+                          : _selectedIndex == 1
                           ? Alignment.center
+                          : _selectedIndex == 2
+                          ? Alignment.centerRight
                           : Alignment.centerRight,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -72,7 +100,7 @@ class MainBottomNavigationBar extends StatelessWidget {
                             ),
                           ),
                           Container(
-                            width: MediaQuery.of(context).size.width / 3,
+                            width: MediaQuery.of(context).size.width / 4,
                             height: 2,
                             decoration: BoxDecoration(
                               color: Theme.of(context).colorScheme.primary,

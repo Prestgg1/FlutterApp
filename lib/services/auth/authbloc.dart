@@ -4,6 +4,7 @@ import 'package:openapi/openapi.dart' as backend;
 import 'package:safatapp/services/api.dart';
 import 'package:safatapp/services/auth/authevent.dart';
 import 'package:safatapp/services/auth/authstate.dart';
+import 'package:dio/dio.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final _storage = const FlutterSecureStorage();
@@ -19,7 +20,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _onAuthCheck(AuthCheck event, Emitter<AuthState> emit) async {
     final token = await _storage.read(key: 'access_token');
     if (token != null) {
-      _api.setBearerAuth('Bearer', token);
+      _api.dio.options.headers['Authorization'] = 'Bearer $token';
       emit(Authenticated(token));
     } else {
       emit(Unauthenticated());
@@ -35,15 +36,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             ..password = event.password,
         ),
       );
+
       if (result.statusCode == 200 && result.data != null) {
         await _storage.write(key: 'access_token', value: result.data!.token);
-        _api.setBearerAuth('Bearer', result.data!.token);
+        _api.dio.options.headers['Authorization'] =
+            'Bearer ${result.data!.token}';
+
         emit(Authenticated(result.data!.token));
       } else {
         emit(Unauthenticated(error: 'Email və ya şifrə yanlışdır'));
       }
     } catch (e) {
-      emit(Unauthenticated(error: 'Server xətası'));
+      if (e is DioException) {
+        final errorData = e.response?.data;
+        final message = (errorData is Map && errorData['detail'] != null)
+            ? errorData['detail']
+            : 'Server xətası baş verdi';
+        emit(Unauthenticated(error: message));
+      } else {
+        emit(Unauthenticated(error: 'Naməlum xəta: ${e.toString()}'));
+      }
     }
   }
 
@@ -69,7 +81,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       if (result.statusCode == 200 && result.data != null) {
         await _storage.write(key: 'access_token', value: result.data!.token);
-        _api.setBearerAuth('Bearer', result.data!.token);
+        _api.dio.options.headers['Authorization'] =
+            'Bearer ${result.data!.token}';
+
         emit(Authenticated(result.data!.token));
       } else {
         emit(Unauthenticated(error: 'Email və ya şifrə yanlışdır'));

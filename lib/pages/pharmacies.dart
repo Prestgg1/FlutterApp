@@ -69,7 +69,6 @@ class PharmaciesListPageState extends State<PharmaciesListPage> {
             onChanged: onSearchChanged,
           ),
         ),
-        Text(MediaQuery.of(context).size.height.toString()),
         Text(
           "Apteklər",
           style: TextStyle(

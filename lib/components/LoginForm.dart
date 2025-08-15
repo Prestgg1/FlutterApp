@@ -30,7 +30,7 @@ class _LoginFormState extends State<LoginForm> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is Authenticated) {
-          context.go('/'); // Login uğurlu → ana səhifəyə yönləndir
+          /*   context.go('/'); */ // Login uğurlu → ana səhifəyə yönləndir
         } else if (state is Unauthenticated && state.error != null) {
           ScaffoldMessenger.of(
             context,

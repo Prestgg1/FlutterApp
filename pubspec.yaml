@@ -48,6 +48,11 @@ dependencies:
   flutter_launcher_icons: ^0.14.4
   flutter_native_splash: ^2.4.6
   google_fonts: ^6.3.0
+  intl: ^0.20.2
+  equatable: ^2.0.7
+  fluttertoast: ^8.2.12
+  flutter_svg: ^2.2.0
+  google_sign_in: ^7.1.1
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +77,7 @@ flutter:
   uses-material-design: true
   assets:
    - assets/
+   - assets/icons/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

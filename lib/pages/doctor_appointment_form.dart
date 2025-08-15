@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:go_router/go_router.dart';
 
 class DoctorAppointmentForm extends StatelessWidget {
   const DoctorAppointmentForm({super.key});
@@ -57,7 +58,9 @@ class DoctorAppointmentForm extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    context.go('/successfull-rezervation');
+                  },
                   child: Text(
                     'Dəvam et',
                     style: GoogleFonts.poppins(

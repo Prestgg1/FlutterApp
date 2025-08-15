@@ -25,10 +25,31 @@ class MainEndDrawer extends StatelessWidget {
               ),
             ),
             ListTile(
+              title: const Text('Analizlər'),
+              onTap: () {
+                Navigator.pop(context);
+                context.push('/analyzes-doctor');
+              },
+            ),
+            /*  ListTile(
               title: const Text('Haqqımızda'),
               onTap: () {
                 Navigator.pop(context);
                 context.push('/about');
+              },
+            ), */
+            ListTile(
+              title: const Text('Rezervasiyalar'),
+              onTap: () {
+                Navigator.pop(context);
+                context.push('/rezerves');
+              },
+            ),
+            ListTile(
+              title: const Text('Rezervasiyalar Müştəri'),
+              onTap: () {
+                Navigator.pop(context);
+                context.push('/rezerves-customer');
               },
             ),
             ListTile(

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:safatapp/components/analyzes_doctor.dart';
+import 'package:safatapp/layouts/analyzes_layout.dart';
 import 'package:safatapp/layouts/main_layout.dart';
 import 'package:safatapp/pages/abouts.dart';
+import 'package:safatapp/pages/analyzes_clinic.dart';
+import 'package:safatapp/pages/appointment_cancel.dart';
+import 'package:safatapp/pages/appointment_cancelled.dart';
 import 'package:safatapp/pages/appointment_reason.dart';
 import 'package:safatapp/pages/blog.dart';
 import 'package:safatapp/pages/blogdetail.dart';
@@ -15,25 +20,41 @@ import 'package:safatapp/pages/doctors.dart';
 import 'package:safatapp/pages/favorites.dart';
 import 'package:safatapp/pages/forgot-password.dart';
 import 'package:safatapp/pages/home.dart';
+import 'package:safatapp/pages/notifications.dart';
 import 'package:safatapp/pages/otp.dart';
 import 'package:safatapp/pages/pharmacies.dart';
 import 'package:safatapp/pages/pharmacy_detail.dart';
 import 'package:safatapp/pages/products.dart';
+import 'package:safatapp/pages/profile.dart';
 import 'package:safatapp/pages/register.dart';
 import 'package:safatapp/pages/reset_password.dart';
+import 'package:safatapp/pages/rezervation_customer.dart';
+import 'package:safatapp/pages/rezerves.dart';
+import 'package:safatapp/pages/successfull_rezervation.dart';
 import 'package:safatapp/services/auth/authevent.dart';
 import "pages/login.dart";
+
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safatapp/services/auth/authbloc.dart';
+import 'package:safatapp/pages/profile_edit.dart';
+import 'package:safatapp/services/appointment/appointment_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final authBloc = AuthBloc();
-  authBloc.add(AuthCheck());
+  final authBloc = AuthBloc()..add(AuthCheck());
+  final appointmentBloc = AppointmentBloc();
 
-  runApp(BlocProvider(create: (context) => authBloc, child: const MyApp()));
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthBloc>(create: (context) => authBloc),
+        BlocProvider<AppointmentBloc>(create: (context) => appointmentBloc),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -58,6 +79,52 @@ class MyApp extends StatelessWidget {
               GoRoute(
                 path: '/about',
                 builder: (context, state) => const AboutPage(),
+              ),
+              GoRoute(
+                path: '/rezerves',
+                builder: (context, state) => Rezerves(),
+              ),
+              ShellRoute(
+                builder: (context, state, child) =>
+                    AnalyzesLayout(child: child),
+                routes: [
+                  GoRoute(
+                    path: '/analyzes-doctor',
+                    builder: (context, state) => const AnalyzesDoctor(),
+                  ),
+                  GoRoute(
+                    path: '/analyzes-clinic',
+                    builder: (context, state) => const AnalyzesClinic(),
+                  ),
+                ],
+              ),
+              GoRoute(
+                path: '/profile',
+                builder: (context, state) => const Profile(),
+              ),
+              GoRoute(
+                path: '/notifications',
+                builder: (context, state) => const Notifications(),
+              ),
+              GoRoute(
+                path: '/rezerves-customer',
+                builder: (context, state) => RezervationCustomer(),
+              ),
+              GoRoute(
+                path: '/appointment-cancelled',
+                builder: (context, state) => const AppointmentCancelled(),
+              ),
+              GoRoute(
+                path: '/appointment-cancel',
+                builder: (context, state) => const AppointmentCancel(),
+              ),
+              GoRoute(
+                path: '/appointment-reason',
+                builder: (context, state) => const AppointmentReason(),
+              ),
+              GoRoute(
+                path: '/profile-edit',
+                builder: (context, state) => const ProfileEdit(),
               ),
               GoRoute(
                 path: '/blog',
@@ -146,10 +213,21 @@ class MyApp extends StatelessWidget {
             builder: (context, state) => const ForgotPasswordPage(),
           ),
 
-          GoRoute(path: '/otp', builder: (context, state) => const OtpPage()),
           GoRoute(
-            path: '/reset-password',
-            builder: (context, state) => const PasswordResetPage(),
+            path: '/otp/:email',
+            builder: (context, state) =>
+                OtpPage(email: state.pathParameters['email']!),
+          ),
+          GoRoute(
+            path: '/successfull-rezervation',
+            builder: (context, state) => const SuccessfullRezervation(),
+          ),
+          GoRoute(
+            path: '/reset-password/:email/:otp',
+            builder: (context, state) => PasswordResetPage(
+              email: state.pathParameters['email']!,
+              otp: state.pathParameters['otp']!,
+            ),
           ),
         ],
       ),

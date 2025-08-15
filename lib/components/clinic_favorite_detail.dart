@@ -39,19 +39,17 @@ class _ClinicFavoriteHorizontalListState
       return;
     }
 
-    final token = authState.token;
     try {
       final response = await api
           .getFavoritesApi()
-          .getClinicFavoritesApiFavoritesClinicGet(
-            headers: {'Authorization': 'Bearer $token'},
-          );
+          .getClinicFavoritesApiFavoritesClinicGet();
       setState(() {
         clinics = response.data?.toList() ?? [];
         loading = false;
       });
     } catch (e) {
-      // Lazım gələrsə, səhv mesajı da göstərə bilərsən
+      if (!mounted) return;
+      setState(() => loading = false);
     }
   }
 
