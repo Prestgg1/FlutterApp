@@ -18,12 +18,14 @@ class AuthRegister extends AuthEvent {
   final String phone;
   final String birthday;
   final String email;
+  final String region;
   final String password;
   AuthRegister(
     this.name,
     this.finCode,
     this.address,
     this.street,
+    this.region,
     this.city,
     this.gender,
     this.phone,

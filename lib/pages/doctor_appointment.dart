@@ -7,7 +7,9 @@ import 'package:safatapp/services/appointment/appointment_bloc.dart';
 import 'package:safatapp/services/appointment/appointment_event.dart';
 
 class DoctorAppointmentPage extends StatefulWidget {
-  const DoctorAppointmentPage({super.key});
+  const DoctorAppointmentPage({super.key, required this.modelId});
+
+  final int modelId;
 
   @override
   State<DoctorAppointmentPage> createState() => _DoctorAppointmentPageState();
@@ -15,31 +17,43 @@ class DoctorAppointmentPage extends StatefulWidget {
 
 class _DoctorAppointmentPageState extends State<DoctorAppointmentPage> {
   DateTime? selectedDate;
+  String? selectedTime; // 👈 seçilmiş saatı saxlayırıq
 
   Widget _timeButton(String time, {bool selected = false}) {
-    return Container(
-      width: 60,
-      height: 60,
-      decoration: BoxDecoration(
-        color: selected ? const Color(0xFFD9EBE7) : Colors.white,
-        borderRadius: BorderRadius.circular(30),
-        boxShadow: selected
-            ? []
-            : [
-                const BoxShadow(
-                  color: Color(0x3F000000),
-                  offset: Offset(0, 3),
-                  blurRadius: 4,
-                ),
-              ],
-      ),
-      alignment: Alignment.center,
-      child: Text(
-        time,
-        textAlign: TextAlign.center,
-        style: GoogleFonts.rubik(
-          fontSize: selected ? 14 : 13,
-          color: selected ? const Color(0xFF1F8871) : Colors.black,
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          selectedTime = time; // 👈 kliklənən saat seçilsin
+        });
+      },
+      child: Container(
+        width: 60,
+        height: 60,
+        decoration: BoxDecoration(
+          color: (selectedTime == time)
+              ? const Color(0xFFD9EBE7)
+              : Colors.white,
+          borderRadius: BorderRadius.circular(30),
+          boxShadow: (selectedTime == time)
+              ? []
+              : [
+                  const BoxShadow(
+                    color: Color(0x3F000000),
+                    offset: Offset(0, 3),
+                    blurRadius: 4,
+                  ),
+                ],
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          time,
+          textAlign: TextAlign.center,
+          style: GoogleFonts.rubik(
+            fontSize: (selectedTime == time) ? 14 : 13,
+            color: (selectedTime == time)
+                ? const Color(0xFF1F8871)
+                : Colors.black,
+          ),
         ),
       ),
     );
@@ -71,6 +85,7 @@ class _DoctorAppointmentPageState extends State<DoctorAppointmentPage> {
                   });
                 },
               ),
+              /* Burada date seçilir. eğer date seçilmeyibse default olaraq indi zamanı seçilecek.  */
               const SizedBox(height: 30),
 
               Align(
@@ -90,11 +105,13 @@ class _DoctorAppointmentPageState extends State<DoctorAppointmentPage> {
                 children: [
                   _timeButton('10:00\nAM'),
                   _timeButton('12:00\nAM'),
-                  _timeButton('02:00\nPM', selected: true),
+                  _timeButton('02:00\nPM'),
                   _timeButton('03:00\nPM'),
                   _timeButton('04:00\nPM'),
                 ],
               ),
+              /* Burada time seçilir. yuxarda elave olunmuş selectedDate deyerine elave olaraq time elave olunmalıdır. 
+                 bu formada çıxmalıdır 2025-08-17T12:00:00Z formatında olmalıdır */
               const SizedBox(height: 15),
 
               Align(
@@ -118,6 +135,7 @@ class _DoctorAppointmentPageState extends State<DoctorAppointmentPage> {
                   );
                 }).toList(),
               ),
+              /* Burayı şimdilik boş ver.  */
               const SizedBox(height: 10),
 
               SizedBox(
@@ -131,20 +149,45 @@ class _DoctorAppointmentPageState extends State<DoctorAppointmentPage> {
                     ),
                   ),
                   onPressed: () {
-                    if (selectedDate == null) {
+                    final date = selectedDate ?? DateTime.now();
+                    if (selectedTime == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Lütfen tarih seçin")),
+                        const SnackBar(content: Text("Lütfen saat seçin")),
                       );
                       return;
                     }
 
-                    // 📌 BLoC’a tarihi kaydet
+                    // saat stringini parse et (örn: 02:00 PM)
+                    final timeParts = selectedTime!
+                        .split("\n")
+                        .first; // "02:00"
+                    final isPM = selectedTime!.contains("PM");
+                    var hour = int.parse(timeParts.split(":")[0]);
+                    final minute = int.parse(timeParts.split(":")[1]);
+
+                    if (isPM && hour != 12) hour += 12;
+                    if (!isPM && hour == 12) hour = 0;
+
+                    final combinedDateTime = DateTime.utc(
+                      date.year,
+                      date.month,
+                      date.day,
+                      hour,
+                      minute,
+                    );
+
+                    final isoString = combinedDateTime
+                        .toUtc()
+                        .toIso8601String();
+                    print("📅 Seçilmiş tarix və saat: $isoString");
+
+                    // 📌 BLoC’a tarixi + saatı göndər
                     context.read<AppointmentBloc>().add(
-                      AppointmentDateSelected(selectedDate!),
+                      AppointmentDateSelected(combinedDateTime),
                     );
 
                     // 📌 Yönlendirme
-                    context.go("/doctor-appointment-form");
+                    context.go("/doctor-appointment-form/${widget.modelId}");
                   },
                   child: Text(
                     'Dəvam et',

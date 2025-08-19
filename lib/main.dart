@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:safatapp/components/analyzes_doctor.dart';
 import 'package:safatapp/layouts/analyzes_layout.dart';
+import 'package:safatapp/layouts/authed_layout.dart';
 import 'package:safatapp/layouts/main_layout.dart';
 import 'package:safatapp/pages/abouts.dart';
 import 'package:safatapp/pages/analyzes_clinic.dart';
@@ -29,7 +30,6 @@ import 'package:safatapp/pages/profile.dart';
 import 'package:safatapp/pages/register.dart';
 import 'package:safatapp/pages/reset_password.dart';
 import 'package:safatapp/pages/rezervation_customer.dart';
-import 'package:safatapp/pages/rezerves.dart';
 import 'package:safatapp/pages/successfull_rezervation.dart';
 import 'package:safatapp/services/auth/authevent.dart';
 import "pages/login.dart";
@@ -80,32 +80,57 @@ class MyApp extends StatelessWidget {
                 path: '/about',
                 builder: (context, state) => const AboutPage(),
               ),
-              GoRoute(
-                path: '/rezerves',
-                builder: (context, state) => Rezerves(),
-              ),
+
               ShellRoute(
-                builder: (context, state, child) =>
-                    AnalyzesLayout(child: child),
+                builder: (context, state, child) => AuthedLayout(child: child),
                 routes: [
-                  GoRoute(
-                    path: '/analyzes-doctor',
-                    builder: (context, state) => const AnalyzesDoctor(),
+                  ShellRoute(
+                    builder: (context, state, child) =>
+                        AnalyzesLayout(child: child),
+                    routes: [
+                      GoRoute(
+                        path: '/analyzes-doctor',
+                        builder: (context, state) => const AnalyzesDoctor(),
+                      ),
+                      GoRoute(
+                        path: '/analyzes-clinic',
+                        builder: (context, state) => const AnalyzesClinic(),
+                      ),
+                    ],
                   ),
                   GoRoute(
-                    path: '/analyzes-clinic',
-                    builder: (context, state) => const AnalyzesClinic(),
+                    path: '/profile',
+                    builder: (context, state) => const Profile(),
+                  ),
+                  GoRoute(
+                    path: '/notifications',
+                    builder: (context, state) => const Notifications(),
+                  ),
+                  GoRoute(
+                    path: '/favorites',
+                    builder: (context, state) => const FavoritesPage(),
+                  ),
+                  GoRoute(
+                    path: '/profile-edit',
+                    builder: (context, state) => const ProfileEdit(),
+                  ),
+                  GoRoute(
+                    path: '/appointment-cancelled',
+                    builder: (context, state) => const AppointmentCancelled(),
+                  ),
+                  GoRoute(
+                    path: '/appointment-cancel/:id',
+                    builder: (context, state) =>
+                        AppointmentCancel(id: state.pathParameters['id']!),
+                  ),
+                  GoRoute(
+                    path: '/appointment-reason/:id',
+                    builder: (context, state) =>
+                        AppointmentReason(id: state.pathParameters['id']!),
                   ),
                 ],
               ),
-              GoRoute(
-                path: '/profile',
-                builder: (context, state) => const Profile(),
-              ),
-              GoRoute(
-                path: '/notifications',
-                builder: (context, state) => const Notifications(),
-              ),
+
               GoRoute(
                 path: '/rezerves-customer',
                 builder: (context, state) => RezervationCustomer(),
@@ -115,12 +140,9 @@ class MyApp extends StatelessWidget {
                 builder: (context, state) => const AppointmentCancelled(),
               ),
               GoRoute(
-                path: '/appointment-cancel',
-                builder: (context, state) => const AppointmentCancel(),
-              ),
-              GoRoute(
-                path: '/appointment-reason',
-                builder: (context, state) => const AppointmentReason(),
+                path: '/appointment-cancel/:id',
+                builder: (context, state) =>
+                    AppointmentCancel(id: state.pathParameters['id']!),
               ),
               GoRoute(
                 path: '/profile-edit',
@@ -175,21 +197,18 @@ class MyApp extends StatelessWidget {
                 builder: (context, state) => const ClinicsListPage(),
               ),
               GoRoute(
-                path: '/doctor-appointment',
-                builder: (context, state) => const DoctorAppointmentPage(),
+                path: '/doctor-appointment/:id',
+                builder: (context, state) => DoctorAppointmentPage(
+                  modelId: int.parse(state.pathParameters['id']!),
+                ),
               ),
               GoRoute(
-                path: '/doctor-appointment-form',
-                builder: (context, state) => const DoctorAppointmentForm(),
+                path: '/doctor-appointment-form/:id',
+                builder: (context, state) => DoctorAppointmentScreen(
+                  modelId: int.parse(state.pathParameters['id']!),
+                ),
               ),
-              GoRoute(
-                path: '/appointment-reason',
-                builder: (context, state) => const AppointmentReason(),
-              ),
-              GoRoute(
-                path: '/favorites',
-                builder: (context, state) => const FavoritesPage(),
-              ),
+
               GoRoute(
                 path: '/pharmacies',
                 builder: (context, state) => const PharmaciesListPage(),

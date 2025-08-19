@@ -46,7 +46,8 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
         Builder(
           builder: (context) => IconButton(
             icon: Icon(
-              Icons.menu,
+              Icons.menu_sharp,
+              size: 30,
               color: Theme.of(context).colorScheme.primary,
             ),
             onPressed: () => Scaffold.of(context).openEndDrawer(),

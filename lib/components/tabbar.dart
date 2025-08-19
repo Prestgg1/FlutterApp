@@ -143,7 +143,7 @@ class _CustomTabBarState extends State<CustomTabBar> {
                   ),
                 ),
 
-                GestureDetector(
+                /*     GestureDetector(
                   onTap: () => {
                     setState(() => activeIndex = 3),
                     context.go('/wallet'),
@@ -174,10 +174,10 @@ class _CustomTabBarState extends State<CustomTabBar> {
                       const SizedBox(height: 10), // alt çizgi için boşluk bırak
                     ],
                   ),
-                ),
+                ), */
                 GestureDetector(
                   onTap: () => {
-                    setState(() => activeIndex = 4),
+                    setState(() => activeIndex = 3),
                     context.go('/profile'),
                   },
                   behavior: HitTestBehavior.translucent,
@@ -185,7 +185,7 @@ class _CustomTabBarState extends State<CustomTabBar> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SvgPicture.asset(
-                        activeIndex == 4
+                        activeIndex == 3
                             ? tabs[3]["active"]!
                             : tabs[3]["inactive"]!,
                         width: 28,
@@ -194,7 +194,7 @@ class _CustomTabBarState extends State<CustomTabBar> {
                       ),
                       const SizedBox(height: 4),
                       // Dot göstergesi
-                      if (activeIndex == 4)
+                      if (activeIndex == 3)
                         Container(
                           width: 6,
                           height: 6,
@@ -212,11 +212,14 @@ class _CustomTabBarState extends State<CustomTabBar> {
 
             // Animated indicator (alt çizgi)
             AnimatedAlign(
-              alignment: Alignment(-1.0 + 2.0 * activeIndex / (tabs.length), 1),
+              alignment: Alignment(
+                -1.0 + 2.0 * activeIndex / (tabs.length - 1),
+                1,
+              ),
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeInOut,
               child: Container(
-                width: MediaQuery.of(context).size.width / tabs.length - 20,
+                width: MediaQuery.of(context).size.width / tabs.length,
                 height: 3,
                 decoration: BoxDecoration(
                   color: const Color(0xFF226C63),

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class DoctorServices extends StatelessWidget {
-  const DoctorServices({super.key});
+  const DoctorServices({super.key, required this.id});
+
+  final int id;
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +14,9 @@ class DoctorServices extends StatelessWidget {
         Flexible(
           child: GestureDetector(
             onTap: () {
-              context.go('/appointment-reason');
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Bu xidmət hələ icra olunmur.')),
+              );
             },
             child: ServiceBox(
               icon: Icons.receipt,
@@ -25,7 +29,9 @@ class DoctorServices extends StatelessWidget {
         Flexible(
           child: GestureDetector(
             onTap: () {
-              context.go('/doctor-appointment-form');
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Bu xidmət hələ icra olunmur.')),
+              );
             },
             child: ServiceBox(
               icon: Icons.medical_information,
@@ -38,7 +44,7 @@ class DoctorServices extends StatelessWidget {
         Flexible(
           child: GestureDetector(
             onTap: () {
-              context.go('/doctor-appointment');
+              context.go('/doctor-appointment/$id');
             },
             child: ServiceBox(
               icon: Icons.calendar_today,

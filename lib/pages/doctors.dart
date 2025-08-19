@@ -47,7 +47,7 @@ class _DoctorsListPageState extends State<DoctorsListPage> {
   Future<void> fetchDoctors() async {
     setState(() => loading = true);
     try {
-      final response = await api.getDoctorsApi().listDoctorsApiDoctorsGet(
+      final response = await api.getDoctorApi().listDoctorsApiDoctorsGet(
         search: searchQuery.trim().isEmpty ? null : searchQuery,
       );
       setState(() {

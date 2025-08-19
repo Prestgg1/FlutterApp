@@ -28,7 +28,7 @@ class _DoctorHorizontalListState extends State<DoctorHorizontalList> {
   Future<void> fetchDoctors() async {
     setState(() => loading = true);
     try {
-      final response = await api.getDoctorsApi().listDoctorsApiDoctorsGet();
+      final response = await api.getDoctorApi().listDoctorsApiDoctorsGet();
       setState(() {
         doctors = response.data?.toList() ?? [];
         loading = false;

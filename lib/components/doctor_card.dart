@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:openapi/openapi.dart' as backend;
+import 'package:safatapp/components/favorite_btn.dart';
 
 class RatingTag extends StatelessWidget {
   final String rating;
@@ -102,7 +103,7 @@ class _DoctorCardState extends State<DoctorCard> {
               const SizedBox(height: 12),
               ClipOval(
                 child: Image.network(
-                  user.image?.anyOf.values.entries.first.value.toString() ?? '',
+                  user.image,
                   width: 72,
                   height: 72,
                   fit: BoxFit.cover,
@@ -127,8 +128,10 @@ class _DoctorCardState extends State<DoctorCard> {
                 ),
               ),
               Text(
-                "Klinika: ${widget.doctor.clinic?.toString() ?? 'Yoxdur'}",
+                "Klinika: ${widget.doctor.clinic?.anyOf.values[0] ?? 'Yoxdur'}",
                 style: const TextStyle(fontSize: 12, color: Colors.grey),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: 4),
               Container(
@@ -161,20 +164,10 @@ class _DoctorCardState extends State<DoctorCard> {
             ],
           ),
         ),
-        Positioned(
-          top: 8,
-          right: 8,
-          child: GestureDetector(
-            onTap: () {
-              setState(() {
-                isFavorite = !isFavorite;
-              });
-            },
-            child: Icon(
-              isFavorite ? Icons.favorite : Icons.favorite_border,
-              color: isFavorite ? Colors.red : Colors.grey,
-            ),
-          ),
+        FavoriteBtn(
+          type: "doctor",
+          id: "${widget.doctor.id}",
+          isFavorite: widget.doctor.hasFavorited,
         ),
         RatingTag(rating: widget.doctor.averageRating.toString()),
       ],

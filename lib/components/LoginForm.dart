@@ -20,6 +20,7 @@ class _LoginFormState extends State<LoginForm> {
   bool rememberMe = true;
 
   void _submit() {
+    setState(() => _isLoading = true);
     if (_formKey.currentState!.validate()) {
       context.read<AuthBloc>().add(AuthLogin(email, password));
     }
@@ -30,7 +31,7 @@ class _LoginFormState extends State<LoginForm> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is Authenticated) {
-          /*   context.go('/'); */ // Login uğurlu → ana səhifəyə yönləndir
+          context.go('/'); // Login uğurlu → ana səhifəyə yönləndir
         } else if (state is Unauthenticated && state.error != null) {
           ScaffoldMessenger.of(
             context,

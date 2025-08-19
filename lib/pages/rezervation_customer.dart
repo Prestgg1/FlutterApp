@@ -1,67 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
+import 'package:openapi/openapi.dart' as backend;
+import 'package:safatapp/services/api.dart';
 
-class RezervationCustomer extends StatelessWidget {
+class RezervationCustomer extends StatefulWidget {
   RezervationCustomer({super.key});
 
-  final List<Map<String, String>> reservations = [
-    {
-      "name": "Dr. Amin İbr",
-      "specialty": "Psixoloq",
-      "price": "60 azn",
-      "clinic": "Bonadea",
-      "date": "15/09 , Saat : 14:00",
-      "image":
-          "https://firebasestorage.googleapis.com/v0/b/codeless-app.appspot.com/o/projects%2F0S4Cv9GzpkFeQFL3zg0b%2Fe198394767c327a4e68baa31797246c30c25ffe7Ellipse%20141.png?alt=media&token=1d38cfe9-937d-46c6-ba05-61b726d019b2",
-    },
-    // Eyni formatda 5 dəfə daha əlavə edirik
-    {
-      "name": "Dr. Amin İbr",
-      "specialty": "Psixoloq",
-      "price": "60 azn",
-      "clinic": "Bonadea",
-      "date": "15/09 , Saat : 14:00",
-      "image":
-          "https://firebasestorage.googleapis.com/v0/b/codeless-app.appspot.com/o/projects%2F0S4Cv9GzpkFeQFL3zg0b%2Fe198394767c327a4e68baa31797246c30c25ffe7Ellipse%20141.png?alt=media&token=1d38cfe9-937d-46c6-ba05-61b726d019b2",
-    },
-    {
-      "name": "Dr. Amin İbr",
-      "specialty": "Psixoloq",
-      "price": "60 azn",
-      "clinic": "Bonadea",
-      "date": "15/09 , Saat : 14:00",
-      "image":
-          "https://firebasestorage.googleapis.com/v0/b/codeless-app.appspot.com/o/projects%2F0S4Cv9GzpkFeQFL3zg0b%2Fe198394767c327a4e68baa31797246c30c25ffe7Ellipse%20141.png?alt=media&token=1d38cfe9-937d-46c6-ba05-61b726d019b2",
-    },
-    {
-      "name": "Dr. Amin İbr",
-      "specialty": "Psixoloq",
-      "price": "60 azn",
-      "clinic": "Bonadea",
-      "date": "15/09 , Saat : 14:00",
-      "image":
-          "https://firebasestorage.googleapis.com/v0/b/codeless-app.appspot.com/o/projects%2F0S4Cv9GzpkFeQFL3zg0b%2Fe198394767c327a4e68baa31797246c30c25ffe7Ellipse%20141.png?alt=media&token=1d38cfe9-937d-46c6-ba05-61b726d019b2",
-    },
-    {
-      "name": "Dr. Amin İbr",
-      "specialty": "Psixoloq",
-      "price": "60 azn",
-      "clinic": "Bonadea",
-      "date": "15/09 , Saat : 14:00",
-      "image":
-          "https://firebasestorage.googleapis.com/v0/b/codeless-app.appspot.com/o/projects%2F0S4Cv9GzpkFeQFL3zg0b%2Fe198394767c327a4e68baa31797246c30c25ffe7Ellipse%20141.png?alt=media&token=1d38cfe9-937d-46c6-ba05-61b726d019b2",
-    },
-    {
-      "name": "Dr. Amin İbr",
-      "specialty": "Psixoloq",
-      "price": "60 azn",
-      "clinic": "Bonadea",
-      "date": "15/09 , Saat : 14:00",
-      "image":
-          "https://firebasestorage.googleapis.com/v0/b/codeless-app.appspot.com/o/projects%2F0S4Cv9GzpkFeQFL3zg0b%2Fe198394767c327a4e68baa31797246c30c25ffe7Ellipse%20141.png?alt=media&token=1d38cfe9-937d-46c6-ba05-61b726d019b2",
-    },
-  ];
+  @override
+  State<RezervationCustomer> createState() => _RezervationCustomerState();
+}
+
+class _RezervationCustomerState extends State<RezervationCustomer> {
+  late Future<List<backend.AppointmentsDoctorResponse>> reservationsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    reservationsFuture = getReservations();
+  }
+
+  Future<List<backend.AppointmentsDoctorResponse>> getReservations() async {
+    try {
+      final api = ApiService().api;
+      final response = await api
+          .getAppointmentApi()
+          .getAppointmentsDoctorsApiAppointmentDoctorGet();
+
+      if (response.statusCode == 200) {
+        return response.data?.toList() ?? [];
+      }
+    } catch (e) {
+      print(e);
+    }
+    return [];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,21 +53,38 @@ class RezervationCustomer extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: GridView.builder(
-          itemCount: reservations.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisExtent: 250,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-          ),
-          itemBuilder: (context, index) {
-            final item = reservations[index];
-            return ReservationCard(item: item);
-          },
-        ),
+      body: FutureBuilder<List<backend.AppointmentsDoctorResponse>>(
+        future: reservationsFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // 🔄 Loading spinner
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            // ❌ Error durumunda
+            return Center(child: Text("Xəta baş verdi: ${snapshot.error}"));
+          } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+            final reservations = snapshot.data!;
+            return Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: GridView.builder(
+                itemCount: reservations.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisExtent: 250,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                ),
+                itemBuilder: (context, index) {
+                  final item = reservations[index];
+                  return ReservationCard(item: item);
+                },
+              ),
+            );
+          } else {
+            // 📭 Data boşsa
+            return const Center(child: Text("Rezervasiya tapılmadı"));
+          }
+        },
       ),
     );
   }
@@ -102,7 +92,7 @@ class RezervationCustomer extends StatelessWidget {
 
 // Artık her bir kart için ayrı bir widget oluşturduk
 class ReservationCard extends StatelessWidget {
-  final Map<String, String> item;
+  final backend.AppointmentsDoctorResponse item;
 
   const ReservationCard({super.key, required this.item});
 
@@ -122,7 +112,6 @@ class ReservationCard extends StatelessWidget {
           ),
         ],
       ),
-
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -132,7 +121,7 @@ class ReservationCard extends StatelessWidget {
             right: 8,
             child: GestureDetector(
               onTap: () {},
-              child: Icon(Icons.favorite_border, color: Colors.grey),
+              child: const Icon(Icons.favorite_border, color: Colors.grey),
             ),
           ),
           Column(
@@ -143,7 +132,7 @@ class ReservationCard extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(50),
                 child: Image.network(
-                  item["image"]!,
+                  item.user.image,
                   width: 100,
                   height: 100,
                   alignment: Alignment.topCenter,
@@ -152,14 +141,14 @@ class ReservationCard extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                item["name"]!,
+                item.user.name,
                 style: GoogleFonts.poppins(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                 ),
               ),
               Text(
-                item["specialty"]!,
+                item.doctorCategory.title,
                 style: GoogleFonts.poppins(
                   fontSize: 10,
                   color: const Color(0xFF226C63),
@@ -168,7 +157,7 @@ class ReservationCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Text(
-                  'Konsultasiya xidməti: ${item["price"]}\nKlinika: ${item["clinic"]}',
+                  'Konsultasiya xidməti: 60\nKlinika: ${item.clinic?.anyOf.values[0] ?? 'Yoxdur'}',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.poppins(
                     fontSize: 9,
@@ -178,7 +167,7 @@ class ReservationCard extends StatelessWidget {
                 ),
               ),
               Text(
-                item["date"]!,
+                item.date.toString(),
                 style: GoogleFonts.poppins(
                   fontSize: 8,
                   fontWeight: FontWeight.w300,
@@ -188,7 +177,7 @@ class ReservationCard extends StatelessWidget {
               const Spacer(),
               ElevatedButton(
                 onPressed: () {
-                  context.push('/appointment-cancel');
+                  context.push('/appointment-cancel/${item.appointmentId}');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF226C63),

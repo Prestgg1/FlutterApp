@@ -63,9 +63,7 @@ class _PharmacyDetailPageState extends State<PharmacyDetailPage> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child: Image.network(
-                        pharmacy!.user.image?.anyOf.values.entries.first.value
-                                .toString() ??
-                            '',
+                        pharmacy!.user.image,
                         width: double.infinity,
                         height: 200,
                         fit: BoxFit.cover,
@@ -179,12 +177,7 @@ class _PharmacyDetailPageState extends State<PharmacyDetailPage> {
                           'Haqqında məlumat yoxdur ',
                     ),
                     const SizedBox(height: 16),
-                    ReviewInput(
-                      onSend: (message) {
-                        // burada mesajı göndərmək istəsən
-                      },
-                    ),
-                    Reviews(model_id: pharmacy!.id, model: "pharmacy"),
+                    Reviews(modelId: pharmacy!.id, model: "pharmacy"),
                   ],
                 ),
               ),

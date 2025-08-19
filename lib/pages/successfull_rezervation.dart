@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -46,8 +47,8 @@ class SuccessfullRezervation extends StatelessWidget {
                           borderRadius: BorderRadius.circular(105),
                         ),
                         child: Center(
-                          child: Image.network(
-                            'https://storage.googleapis.com/codeless-app.appspot.com/uploads%2Fimages%2F0S4Cv9GzpkFeQFL3zg0b%2F7852c741-8861-4cbb-8650-60459823154d.png',
+                          child: SvgPicture.asset(
+                            'assets/icons/checked.svg',
                             width: 28,
                             height: 21,
                             fit: BoxFit.contain,

@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
                 if (state is Authenticated) {
                   return Padding(
                     padding: const EdgeInsets.all(16),
-                    child: ProfileCard(token: state.token),
+                    child: ProfileCard(user: state.user),
                   );
                 } else if (state is Unauthenticated) {
                   return const SizedBox();

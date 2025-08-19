@@ -44,7 +44,7 @@ class _PharmacyCardState extends State<PharmacyCard> {
               const SizedBox(height: 12),
               ClipOval(
                 child: Image.network(
-                  user.image?.anyOf.values.entries.first.value.toString() ?? '',
+                  user.image,
                   width: 72,
                   height: 72,
                   fit: BoxFit.cover,

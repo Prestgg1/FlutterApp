@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:safatapp/components/ratingStars.dart';
+import 'package:go_router/go_router.dart';
 import 'package:safatapp/services/api.dart';
 import 'package:openapi/openapi.dart' as backend;
+import "../services/auth/authstate.dart";
+import 'reviewcard.dart';
+import 'review_input.dart'; // 🔹 ReviewInput componenti ayrıca faylda olmalıdır
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:safatapp/services/auth/authbloc.dart';
 
 class Reviews extends StatefulWidget {
-  final int model_id;
+  final int modelId;
   final String model;
 
-  const Reviews({super.key, required this.model_id, required this.model});
+  const Reviews({super.key, required this.modelId, required this.model});
 
   @override
   State<Reviews> createState() => _ReviewsState();
@@ -15,7 +20,7 @@ class Reviews extends StatefulWidget {
 
 class _ReviewsState extends State<Reviews> {
   bool loading = true;
-  List<backend.ReviewResponse> reviews = []; // sadə nümunə üçün
+  List<backend.ReviewsResponse> reviews = [];
   late final backend.Openapi api;
 
   @override
@@ -31,8 +36,8 @@ class _ReviewsState extends State<Reviews> {
           .getReviewsApi()
           .getReviewsForModelApiReviewsModelModelIdGet(
             model: widget.model,
-            modelId: widget.model_id,
-          ); // öz route-unla əvəz et
+            modelId: widget.modelId,
+          );
 
       setState(() {
         reviews = response.data?.toList() ?? [];
@@ -40,7 +45,7 @@ class _ReviewsState extends State<Reviews> {
       });
     } catch (e) {
       setState(() {
-        print(e);
+        debugPrint("Review fetch error: $e");
         loading = false;
       });
     }
@@ -53,57 +58,69 @@ class _ReviewsState extends State<Reviews> {
     }
 
     if (reviews.isEmpty) {
-      return const Text("Hələki bir rəy yoxdur.");
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ReviewInput(
+            onSend: (message, rating) {
+              final authState = context.read<AuthBloc>().state;
+              if (authState is! Authenticated) {
+                context.go('/login');
+                return;
+              }
+            },
+            modelId: widget.modelId,
+            model: widget.model,
+          ),
+          const SizedBox(height: 20),
+          const Text("Hələki bir rəy yoxdur."),
+        ],
+      );
     }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        for (final r in reviews)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            child: Container(
-              padding: const EdgeInsets.all(8),
+        ReviewInput(
+          onSend: (message, rating) {
+            final authState = context.read<AuthBloc>().state;
+            if (authState is! Authenticated || authState.user == null) {
+              context.go('/login');
+              return;
+            }
 
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      ClipOval(
-                        child: Image.network(
-                          r.author.image.toString(),
-                          width: 36,
-                          height: 36,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              width: 36,
-                              height: 36,
-                              color: Colors.grey.shade200,
-                              child: Icon(Icons.person, size: 24),
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            r.author.name,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          RatingStars(rating: r.rating.toDouble()),
-                          Text(r.review),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+            final user = authState.user!; // backend.UserBase
+            final optimisticReview = backend.ReviewsResponse(
+              (b) => b
+                ..id = DateTime.now().millisecondsSinceEpoch
+                ..review = message
+                ..rating = rating
+                ..createdAt = DateTime.now()
+                ..author = (backend.UserOutBuilder()
+                  ..id = user.id
+                  ..name = user.name
+                  ..image = user.image),
+            );
+
+            // 🔹 2. UI-ə dərhal əlavə et
+            setState(() {
+              reviews.insert(0, optimisticReview);
+            });
+          },
+          modelId: widget.modelId,
+          model: widget.model,
+        ),
+        const SizedBox(height: 20),
+        ...reviews.map(
+          (r) => ReviewCard(
+            review: r,
+            onDelete: () {
+              setState(() {
+                reviews.remove(r);
+              });
+            },
           ),
+        ), // 🔹 for əvəzinə spread operator
       ],
     );
   }

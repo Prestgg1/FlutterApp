@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:openapi/openapi.dart' as backend;
 import 'package:safatapp/services/api.dart';
@@ -18,10 +19,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _onAuthCheck(AuthCheck event, Emitter<AuthState> emit) async {
+    final currentState = state;
+
+    // Əgər artıq user məlumatı state-də varsa təkrar api çağırmaya ehtiyac yoxdur
+    if (currentState is Authenticated && currentState.user != null) {
+      emit(currentState);
+      return;
+    }
+
     final token = await _storage.read(key: 'access_token');
     if (token != null) {
       _api.dio.options.headers['Authorization'] = 'Bearer $token';
-      emit(Authenticated(token));
+
+      try {
+        final response = await _api.getAuthApi().meApiAuthMeGet();
+        final userBase =
+            response.data?.anyOf.values.entries.first.value
+                as backend.UserBase?;
+
+        emit(Authenticated(token, userBase));
+      } catch (e) {
+        emit(Unauthenticated(error: "Profil məlumatı alına bilmədi"));
+      }
     } else {
       emit(Unauthenticated());
     }
@@ -42,7 +61,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         _api.dio.options.headers['Authorization'] =
             'Bearer ${result.data!.token}';
 
-        emit(Authenticated(result.data!.token));
+        emit(Authenticated(result.data!.token, result.data?.user));
       } else {
         emit(Unauthenticated(error: 'Email və ya şifrə yanlışdır'));
       }
@@ -66,30 +85,44 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       final result = await _api.getAuthApi().registerApiAuthRegisterPost(
         userCreate: backend.UserCreate(
+          /*FIXME  birthday and gender fix  */
           (b) => b
             ..name = event.name
             ..finCode = event.finCode
             ..address = event.address
             ..street = event.street
+            ..region = event.region
             ..city = event.city
-            ..gender = event.gender
+            ..gender = event.gender == "Kişi"
+                ? backend.GenderEnumSchema.male
+                : backend.GenderEnumSchema.female
             ..phone = event.phone
-            ..birthday = DateTime.parse(event.birthday) as backend.Date?
+            ..birthday = backend.Date(2005, 1, 1)
             ..email = event.email
             ..password = event.password,
         ),
       );
+      debugPrint(result.toString());
       if (result.statusCode == 200 && result.data != null) {
         await _storage.write(key: 'access_token', value: result.data!.token);
         _api.dio.options.headers['Authorization'] =
             'Bearer ${result.data!.token}';
 
-        emit(Authenticated(result.data!.token));
+        emit(Authenticated(result.data!.token, result.data?.user));
       } else {
         emit(Unauthenticated(error: 'Email və ya şifrə yanlışdır'));
       }
     } catch (e) {
-      emit(Unauthenticated(error: 'Server xətası'));
+      debugPrint(e.toString());
+      if (e is DioException) {
+        final errorData = e.response?.data;
+        final message = (errorData is Map && errorData['detail'] != null)
+            ? errorData['detail']
+            : 'Server xətası baş verdi';
+        emit(Unauthenticated(error: message));
+      } else {
+        emit(Unauthenticated(error: 'Naməlum xəta: ${e.toString()}'));
+      }
     }
   }
 

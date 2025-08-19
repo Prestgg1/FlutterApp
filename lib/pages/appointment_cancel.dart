@@ -3,7 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 
 class AppointmentCancel extends StatelessWidget {
-  const AppointmentCancel({super.key});
+  const AppointmentCancel({super.key, required this.id});
+
+  final String id;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +53,7 @@ class AppointmentCancel extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  context.go("/appointment-reason");
+                  context.go("/appointment-reason/$id");
                 },
                 child: Text(
                   'Bəli',

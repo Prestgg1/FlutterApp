@@ -21,6 +21,7 @@ class _RegisterFormState extends State<RegisterForm> {
   String street = '';
   String city = '';
   String? gender;
+  String region = '';
   String phone = '';
   String birthday = '';
   String email = '';
@@ -29,7 +30,21 @@ class _RegisterFormState extends State<RegisterForm> {
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
-      context.read<AuthBloc>().add(AuthLogin(email, password));
+      context.read<AuthBloc>().add(
+        AuthRegister(
+          name,
+          fincode,
+          address,
+          street,
+          region,
+          city,
+          gender!,
+          phone,
+          birthday,
+          email,
+          password,
+        ),
+      );
     }
   }
 
@@ -113,6 +128,11 @@ class _RegisterFormState extends State<RegisterForm> {
               hint: "YYYY-MM-DD",
               keyboardType: TextInputType.datetime,
               onChanged: (v) => setState(() => birthday = v),
+            ),
+            _buildTextField(
+              label: "Region",
+              hint: "Region daxil edin",
+              onChanged: (v) => setState(() => region = v),
             ),
             _buildTextField(
               label: "Email",

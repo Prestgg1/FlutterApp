@@ -62,9 +62,7 @@ class _ClinicDetailPageState extends State<ClinicDetailPage> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child: Image.network(
-                        clinic!.user.image?.anyOf.values.entries.first.value
-                                .toString() ??
-                            '',
+                        clinic!.user.image,
                         width: double.infinity,
                         height: 200,
                         fit: BoxFit.cover,
@@ -177,12 +175,7 @@ class _ClinicDetailPageState extends State<ClinicDetailPage> {
                           'Haqqında məlumat yoxdur ',
                     ),
                     const SizedBox(height: 16),
-                    ReviewInput(
-                      onSend: (message) {
-                        // burada mesajı göndərmək istəsən
-                      },
-                    ),
-                    Reviews(model_id: clinic!.id, model: "clinic"),
+                    Reviews(modelId: clinic!.id, model: "clinic"),
                   ],
                 ),
               ),

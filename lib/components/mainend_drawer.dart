@@ -42,16 +42,10 @@ class MainEndDrawer extends StatelessWidget {
               title: const Text('Rezervasiyalar'),
               onTap: () {
                 Navigator.pop(context);
-                context.push('/rezerves');
-              },
-            ),
-            ListTile(
-              title: const Text('Rezervasiyalar Müştəri'),
-              onTap: () {
-                Navigator.pop(context);
                 context.push('/rezerves-customer');
               },
             ),
+
             ListTile(
               title: const Text('Həkimlər'),
               onTap: () {

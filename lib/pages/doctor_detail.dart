@@ -30,7 +30,7 @@ class _DoctorDetailPageState extends State<DoctorDetailPage> {
 
   Future<void> fetchDoctor() async {
     try {
-      final response = await api.getDoctorsApi().getDoctorApiDoctorsDoctorIdGet(
+      final response = await api.getDoctorApi().getDoctorApiDoctorsDoctorIdGet(
         doctorId: widget.id,
       );
 
@@ -64,9 +64,7 @@ class _DoctorDetailPageState extends State<DoctorDetailPage> {
                         12,
                       ), // istədiyin radius dəyəri
                       child: Image.network(
-                        doctor!.user.image?.anyOf.values.entries.first.value
-                                .toString() ??
-                            '',
+                        doctor!.user.image,
                         width: double.infinity,
                         height: 200,
                         fit: BoxFit.cover,
@@ -93,7 +91,7 @@ class _DoctorDetailPageState extends State<DoctorDetailPage> {
                               ),
                             ),
                             Text(
-                              "${doctor!.doctorCategory.title} | Klinika: ${doctor!.clinic?.toString() ?? 'Yoxdur'}",
+                              "${doctor!.doctorCategory.title} | Klinika: ${doctor!.clinic?.anyOf.values[0] ?? 'Yoxdur'}",
                               style: TextStyle(
                                 fontSize: screenWidth * 0.03,
                                 color: Colors.grey,
@@ -139,7 +137,7 @@ class _DoctorDetailPageState extends State<DoctorDetailPage> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    DoctorServices(),
+                    DoctorServices(id: doctor!.id),
                     const SizedBox(height: 16),
                     Text(
                       'Haqqında',
@@ -156,12 +154,8 @@ class _DoctorDetailPageState extends State<DoctorDetailPage> {
                           'Haqqında məlumat yoxdur ',
                     ),
                     const SizedBox(height: 16),
-                    ReviewInput(
-                      onSend: (message) {
-                        // burada mesajı göndərmək istəsən
-                      },
-                    ),
-                    Reviews(model_id: doctor!.id, model: "doctor"),
+
+                    Reviews(modelId: doctor!.id, model: "doctor"),
                   ],
                 ),
               ),
