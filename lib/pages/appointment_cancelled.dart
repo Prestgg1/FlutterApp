@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppointmentCancelled extends StatelessWidget {
@@ -25,8 +26,8 @@ class AppointmentCancelled extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
                 child: Center(
-                  child: Image.network(
-                    'https://storage.googleapis.com/codeless-app.appspot.com/uploads%2Fimages%2F0S4Cv9GzpkFeQFL3zg0b%2Fd7c39ea1-1449-4ac3-bf67-bae11a5c9926.png',
+                  child: SvgPicture.asset(
+                    'assets/icons/checked.svg',
                     width: screenWidth * 0.12,
                     height: screenWidth * 0.12,
                     fit: BoxFit.contain,

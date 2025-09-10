@@ -15,7 +15,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthCheck>(_onAuthCheck);
     on<AuthLogin>(_onAuthLogin);
     on<AuthLogout>(_onAuthLogout);
+    on<AuthUpdateUserImage>(_onAuthUpdateUserImage);
     on<AuthRegister>(_onAuthRegister);
+  }
+  _onAuthUpdateUserImage(AuthUpdateUserImage event, Emitter<AuthState> emit) {
+    final currentState = state;
+    if (currentState is Authenticated && currentState.user != null) {
+      final updatedUser = backend.UserBase(
+        (b) => b
+          ..id = currentState.user!.id
+          ..name = currentState.user!.name
+          ..email = currentState.user!.email
+          ..role = currentState.user!.role
+          ..status = currentState.user!.status
+          ..image = event.image,
+      );
+      emit(Authenticated(currentState.token, updatedUser));
+    }
   }
 
   Future<void> _onAuthCheck(AuthCheck event, Emitter<AuthState> emit) async {
@@ -85,7 +101,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       final result = await _api.getAuthApi().registerApiAuthRegisterPost(
         userCreate: backend.UserCreate(
-          /*FIXME  birthday and gender fix  */
           (b) => b
             ..name = event.name
             ..finCode = event.finCode
@@ -97,7 +112,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                 ? backend.GenderEnumSchema.male
                 : backend.GenderEnumSchema.female
             ..phone = event.phone
-            ..birthday = backend.Date(2005, 1, 1)
+            ..birthday = backend.Date(
+              event.birthday.year,
+              event.birthday.month,
+              event.birthday.day,
+            )
             ..email = event.email
             ..password = event.password,
         ),

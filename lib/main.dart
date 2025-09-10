@@ -4,12 +4,15 @@ import 'package:safatapp/layouts/analyzes_layout.dart';
 import 'package:safatapp/layouts/authed_layout.dart';
 import 'package:safatapp/layouts/main_layout.dart';
 import 'package:safatapp/pages/abouts.dart';
+import 'package:safatapp/pages/aichat.dart';
 import 'package:safatapp/pages/analyzes_clinic.dart';
 import 'package:safatapp/pages/appointment_cancel.dart';
 import 'package:safatapp/pages/appointment_cancelled.dart';
 import 'package:safatapp/pages/appointment_reason.dart';
 import 'package:safatapp/pages/blog.dart';
 import 'package:safatapp/pages/blogdetail.dart';
+import 'package:safatapp/pages/chat.dart';
+import 'package:safatapp/pages/chats.dart';
 import 'package:safatapp/pages/clinic_detail.dart';
 import 'package:safatapp/pages/clinics.dart';
 import 'package:safatapp/pages/contact.dart';
@@ -33,6 +36,7 @@ import 'package:safatapp/pages/rezervation_customer.dart';
 import 'package:safatapp/pages/successfull_rezervation.dart';
 import 'package:safatapp/services/auth/authevent.dart';
 import "pages/login.dart";
+import 'package:toastification/toastification.dart';
 
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -52,7 +56,7 @@ void main() async {
         BlocProvider<AuthBloc>(create: (context) => authBloc),
         BlocProvider<AppointmentBloc>(create: (context) => appointmentBloc),
       ],
-      child: const MyApp(),
+      child: ToastificationWrapper(child: const MyApp()),
     ),
   );
 }
@@ -103,8 +107,25 @@ class MyApp extends StatelessWidget {
                     builder: (context, state) => const Profile(),
                   ),
                   GoRoute(
+                    path: '/rezerves-customer',
+                    builder: (context, state) => RezervationCustomer(),
+                  ),
+                  GoRoute(
                     path: '/notifications',
                     builder: (context, state) => const Notifications(),
+                  ),
+                  GoRoute(
+                    path: '/chat/:id',
+                    builder: (context, state) =>
+                        ChatScreen(id: state.pathParameters['id']!),
+                  ),
+                  GoRoute(
+                    path: '/ai-chat',
+                    builder: (context, state) => const AiChatScreen(),
+                  ),
+                  GoRoute(
+                    path: '/chats',
+                    builder: (context, state) => const ChatsListPage(),
                   ),
                   GoRoute(
                     path: '/favorites',
@@ -131,10 +152,6 @@ class MyApp extends StatelessWidget {
                 ],
               ),
 
-              GoRoute(
-                path: '/rezerves-customer',
-                builder: (context, state) => RezervationCustomer(),
-              ),
               GoRoute(
                 path: '/appointment-cancelled',
                 builder: (context, state) => const AppointmentCancelled(),

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:openapi/openapi.dart' as backend;
 import 'package:safatapp/services/api.dart';
 
 class FavoriteBtn extends StatefulWidget {
@@ -11,7 +12,7 @@ class FavoriteBtn extends StatefulWidget {
   });
 
   bool isFavorite;
-  final String type;
+  final backend.FavoriteType type;
   final String id;
 
   @override

@@ -44,11 +44,9 @@ class PharmaciesListPageState extends State<PharmaciesListPage> {
     setState(() => loading = true);
     try {
       final api = ApiService().api;
-      final response = await api
-          .getPharmaciesApi()
-          .getPharmaciesApiPharmaciesGet(
-            search: searchQuery.trim().isEmpty ? null : searchQuery,
-          );
+      final response = await api.getPharmacyApi().getPharmaciesApiPharmaciesGet(
+        search: searchQuery.trim().isEmpty ? null : searchQuery,
+      );
       setState(() {
         pharmacies = response.data?.toList() ?? [];
         loading = false;

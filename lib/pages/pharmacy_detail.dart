@@ -31,7 +31,7 @@ class _PharmacyDetailPageState extends State<PharmacyDetailPage> {
   Future<void> fetchDoctor() async {
     try {
       final response = await api
-          .getPharmaciesApi()
+          .getPharmacyApi()
           .getPharmacyApiPharmaciesPharmacyIdGet(pharmacyId: widget.id);
 
       setState(() {

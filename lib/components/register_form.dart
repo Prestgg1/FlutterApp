@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:safatapp/services/auth/authbloc.dart';
 import 'package:safatapp/services/auth/authevent.dart';
 import 'package:safatapp/services/auth/authstate.dart';
+import 'package:toastification/toastification.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({super.key});
@@ -23,13 +24,17 @@ class _RegisterFormState extends State<RegisterForm> {
   String? gender;
   String region = '';
   String phone = '';
-  String birthday = '';
+  ({int year, int month, int day})? birthday;
   String email = '';
   String password = '';
   bool rememberMe = true;
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true; // 🔹 burada UI yenilənəcək
+      });
+
       context.read<AuthBloc>().add(
         AuthRegister(
           name,
@@ -40,7 +45,7 @@ class _RegisterFormState extends State<RegisterForm> {
           city,
           gender!,
           phone,
-          birthday,
+          birthday!,
           email,
           password,
         ),
@@ -53,15 +58,28 @@ class _RegisterFormState extends State<RegisterForm> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is Authenticated) {
+          toastification.show(
+            context: context,
+            title: Text('Xoş gəldiniz'),
+            type: ToastificationType.success,
+            autoCloseDuration: const Duration(seconds: 2),
+          );
           context.go('/');
         } else if (state is Unauthenticated && state.error != null) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.error!)));
+          toastification.show(
+            context: context,
+            title: Text(state.error!),
+            type: ToastificationType.error,
+            autoCloseDuration: const Duration(seconds: 5),
+          );
         }
 
         setState(() {
-          _isLoading = !(state is AuthInitial || state is Unauthenticated);
+          _isLoading = state is AuthInitial || state is Authenticated
+              ? false
+              : state is Unauthenticated
+              ? false
+              : _isLoading;
         });
       },
       child: Form(
@@ -123,12 +141,7 @@ class _RegisterFormState extends State<RegisterForm> {
               keyboardType: TextInputType.phone,
               onChanged: (v) => setState(() => phone = v),
             ),
-            _buildTextField(
-              label: "Doğum tarixi",
-              hint: "YYYY-MM-DD",
-              keyboardType: TextInputType.datetime,
-              onChanged: (v) => setState(() => birthday = v),
-            ),
+            _buildDatePickerField(label: "Doğum tarixi"),
             _buildTextField(
               label: "Region",
               hint: "Region daxil edin",
@@ -230,6 +243,45 @@ class _RegisterFormState extends State<RegisterForm> {
         borderSide: const BorderSide(color: Colors.red),
         borderRadius: BorderRadius.circular(10),
       ),
+    );
+  }
+
+  Widget _buildDatePickerField({required String label}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+        InkWell(
+          onTap: () async {
+            DateTime? picked = await showDatePicker(
+              context: context,
+              initialDate: DateTime(2000, 1, 1),
+              firstDate: DateTime(1900),
+              lastDate: DateTime.now(),
+            );
+
+            if (picked != null) {
+              setState(() {
+                birthday = (
+                  year: picked.year,
+                  month: picked.month,
+                  day: picked.day,
+                );
+              });
+            }
+          },
+          child: InputDecorator(
+            decoration: _inputDecoration("Doğum tarixi seçin"),
+            child: Text(
+              birthday != null
+                  ? "${birthday!.year}-${birthday!.month}-${birthday!.day}"
+                  : "Seçilməyib",
+              style: const TextStyle(fontSize: 16),
+            ),
+          ),
+        ),
+        const SizedBox(height: 20),
+      ],
     );
   }
 

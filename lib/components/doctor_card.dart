@@ -165,7 +165,7 @@ class _DoctorCardState extends State<DoctorCard> {
           ),
         ),
         FavoriteBtn(
-          type: "doctor",
+          type: backend.FavoriteType.doctor,
           id: "${widget.doctor.id}",
           isFavorite: widget.doctor.hasFavorited,
         ),

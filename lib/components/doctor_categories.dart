@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:openapi/openapi.dart' as backend;
 import 'package:go_router/go_router.dart';
 import 'package:safatapp/services/api.dart';
@@ -76,10 +77,14 @@ class _DoctorCategoriesWidgetState extends State<DoctorCategoriesWidget> {
                     child: SizedBox(
                       height: 40,
                       width: 60,
-                      child: Image.network(
+                      child: SvgPicture.network(
                         category.image?.anyOf.values.entries.first.value
                                 .toString() ??
                             '',
+                        colorFilter: ColorFilter.mode(
+                          Theme.of(context).colorScheme.primary,
+                          BlendMode.srcIn,
+                        ),
                         fit: BoxFit.contain,
                         errorBuilder: (context, error, stackTrace) =>
                             const Icon(Icons.image_not_supported),

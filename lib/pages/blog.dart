@@ -25,7 +25,7 @@ class _BlogListPageState extends State<BlogListPage> {
     try {
       final api = ApiService().api;
 
-      final response = await api.getBlogsApi().getAllBlogsApiBlogsGet();
+      final response = await api.getBlogApi().getAllBlogsApiBlogsGet();
       setState(() {
         blogs = (response.data?.toList() ?? []);
         loading = false;

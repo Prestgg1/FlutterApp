@@ -29,9 +29,9 @@ class _PharmaciesHorizontalListState extends State<PharmaciesHorizontalList> {
   Future<void> fetchPharmacies() async {
     setState(() => loading = true);
     try {
-      final response = await api
-          .getPharmaciesApi()
-          .getPharmaciesApiPharmaciesGet(limit: 8);
+      final response = await api.getPharmacyApi().getPharmaciesApiPharmaciesGet(
+        limit: 8,
+      );
       setState(() {
         pharmacies = response.data?.toList() ?? [];
         loading = false;

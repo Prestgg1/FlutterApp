@@ -53,6 +53,12 @@ dependencies:
   fluttertoast: ^8.2.12
   flutter_svg: ^2.2.0
   google_sign_in: ^7.1.1
+  http: ^1.5.0
+  one_of: ^1.5.0
+  web_socket_channel: ^3.0.3
+  toastification: ^3.0.3
+  image_picker: ^1.2.0
+  file_picker: ^10.3.2
 
 dev_dependencies:
   flutter_test:

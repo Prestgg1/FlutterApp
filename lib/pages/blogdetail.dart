@@ -24,7 +24,7 @@ class _BlogDetailPageState extends State<BlogDetailPage> {
   Future<void> fetchBlog() async {
     try {
       final api = ApiService().api;
-      final response = await api.getBlogsApi().getBlogApiBlogsSlugGet(
+      final response = await api.getBlogApi().getBlogApiBlogsSlugGet(
         slug: widget.slug,
       );
 

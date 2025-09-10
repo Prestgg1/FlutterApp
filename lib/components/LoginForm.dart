@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:safatapp/services/auth/authbloc.dart';
 import 'package:safatapp/services/auth/authevent.dart';
 import 'package:safatapp/services/auth/authstate.dart';
+import 'package:toastification/toastification.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -31,11 +32,20 @@ class _LoginFormState extends State<LoginForm> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is Authenticated) {
-          context.go('/'); // Login uğurlu → ana səhifəyə yönləndir
+          toastification.show(
+            context: context,
+            title: Text('Xoş gəldiniz'),
+            type: ToastificationType.success,
+            autoCloseDuration: const Duration(seconds: 2),
+          );
+          context.go('/');
         } else if (state is Unauthenticated && state.error != null) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.error!)));
+          toastification.show(
+            context: context,
+            title: Text(state.error!),
+            type: ToastificationType.error,
+            autoCloseDuration: const Duration(seconds: 5),
+          );
         }
 
         setState(() {

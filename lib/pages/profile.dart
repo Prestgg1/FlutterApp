@@ -24,6 +24,7 @@ class _ProfileState extends State<Profile> {
     try {
       final api = ApiService().api;
       final response = await api.getUserApi().getProfileApiUserProfileGet();
+      ProfileCache.profile = response.data;
 
       setState(() {
         user = response.data;
@@ -33,76 +34,61 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: user == null
-            ? const Center(
-                child: CircularProgressIndicator(color: Color(0xFF248C76)),
-              )
-            : Column(
-                children: [
-                  const SizedBox(height: 30),
-                  // Üst logo ve düzenleme butonu
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      ClipOval(
-                        child: Image.network(
-                          user?.user.image ?? '',
-                          width: 130,
-                          height: 130,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Positioned(
-                        right: 0,
-                        bottom: 0,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.all(8),
-                            minimumSize: const Size(24, 24),
-                            backgroundColor: const Color(0xFF248C76),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                          child: const Icon(
-                            Icons.edit,
-                            size: 16,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            context.go('/profile-edit');
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
+    if (user == null) {
+      return const Center(
+        child: CircularProgressIndicator(color: Color(0xFF248C76)),
+      );
+    }
 
-                  // Kullanıcı bilgileri
-                  Expanded(
-                    child: ListView(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      children: [
-                        _profileItem("Ad/Soyad", user?.user.name ?? ""),
-                        _profileItem("Email", user?.user.email ?? ""),
-                        _profileItem(
-                          "Doğum tarixi",
-                          user?.details.birthday.toString() ?? "",
-                        ),
-                        _profileItem("Fin kod", user?.details.finCode ?? ""),
-                        _profileItem("Şəhər", user?.details.city ?? ""),
-                        _profileItem("Rayon", user?.details.region ?? ""),
-                        _profileItem("Küçə", user?.details.street ?? ""),
-                        _profileItem("Address", user?.details.address ?? ""),
-                      ],
-                    ),
+    return Stack(
+      children: [
+        Column(
+          children: [
+            const SizedBox(height: 30),
+
+            ClipOval(
+              child: Image.network(
+                user?.user.image ?? '',
+                width: 130,
+                height: 130,
+                fit: BoxFit.cover,
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                children: [
+                  _profileItem("Ad/Soyad", user?.user.name ?? ""),
+                  _profileItem("Email", user?.user.email ?? ""),
+                  _profileItem(
+                    "Doğum tarixi",
+                    user?.details.birthday.toString() ?? "",
                   ),
+                  _profileItem("Fin kod", user?.details.finCode ?? ""),
+                  _profileItem("Şəhər", user?.details.city ?? ""),
+                  _profileItem("Rayon", user?.details.region ?? ""),
+                  _profileItem("Küçə", user?.details.street ?? ""),
+                  _profileItem("Address", user?.details.address ?? ""),
                 ],
               ),
-      ),
+            ),
+          ],
+        ),
+
+        // Sağ aşağıda buton
+        Positioned(
+          right: 20,
+          bottom: 20,
+          child: FloatingActionButton(
+            backgroundColor: const Color(0xFF248C76),
+            onPressed: () => context.go('/profile-edit'),
+            child: const Icon(Icons.edit, color: Colors.white),
+          ),
+        ),
+      ],
     );
   }
 

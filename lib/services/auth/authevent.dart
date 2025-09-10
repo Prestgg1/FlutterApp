@@ -1,3 +1,5 @@
+import 'package:openapi/openapi.dart' as backend;
+
 abstract class AuthEvent {}
 
 class AuthCheck extends AuthEvent {} // App start
@@ -8,6 +10,11 @@ class AuthLogin extends AuthEvent {
   AuthLogin(this.email, this.password);
 }
 
+class AuthUpdateUserImage extends AuthEvent {
+  final String image;
+  AuthUpdateUserImage(this.image);
+}
+
 class AuthRegister extends AuthEvent {
   final String name;
   final String finCode;
@@ -16,7 +23,8 @@ class AuthRegister extends AuthEvent {
   final String city;
   final String gender;
   final String phone;
-  final String birthday;
+  final ({int year, int month, int day}) birthday;
+
   final String email;
   final String region;
   final String password;

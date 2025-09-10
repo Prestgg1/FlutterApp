@@ -45,6 +45,13 @@ class MainEndDrawer extends StatelessWidget {
                 context.push('/rezerves-customer');
               },
             ),
+            ListTile(
+              title: const Text('Chat'),
+              onTap: () {
+                Navigator.pop(context);
+                context.push('/chats');
+              },
+            ),
 
             ListTile(
               title: const Text('Həkimlər'),
