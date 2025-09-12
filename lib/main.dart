@@ -49,7 +49,7 @@ void main() async {
 
   final authBloc = AuthBloc()..add(AuthCheck());
   final appointmentBloc = AppointmentBloc();
-
+  print(1)
   runApp(
     MultiBlocProvider(
       providers: [
