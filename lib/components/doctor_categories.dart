@@ -12,7 +12,7 @@ class DoctorCategoriesWidget extends StatefulWidget {
 }
 
 class _DoctorCategoriesWidgetState extends State<DoctorCategoriesWidget> {
-  List<backend.DoctorCategoryResponse> categories = [];
+  List<backend.DoctorCategoryList> categories = [];
   bool loading = true;
   late final backend.Openapi api;
 
@@ -25,18 +25,18 @@ class _DoctorCategoriesWidgetState extends State<DoctorCategoriesWidget> {
 
   Future<void> fetchCategories() async {
     try {
-      final response = await api
-          .getDoctorCategoriesApi()
-          .getAllApiAdminDoctorCategoriesGet();
+      final response = await api.getDoctorCategoryApi().getAllApiDoctorCategoryGet();
 
-      final List<backend.DoctorCategoryResponse> fetchedCategories =
+      final List<backend.DoctorCategoryList> fetchedCategories =
           response.data?.toList() ?? [];
 
       setState(() {
         categories = fetchedCategories;
         loading = false;
       });
-    } catch (e) {}
+    } catch (e) {
+      
+    }
   }
 
   @override
@@ -78,8 +78,7 @@ class _DoctorCategoriesWidgetState extends State<DoctorCategoriesWidget> {
                       height: 40,
                       width: 60,
                       child: SvgPicture.network(
-                        category.image?.anyOf.values.entries.first.value
-                                .toString() ??
+                        category.image ??
                             '',
                         colorFilter: ColorFilter.mode(
                           Theme.of(context).colorScheme.primary,

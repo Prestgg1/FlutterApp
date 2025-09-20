@@ -24,13 +24,13 @@ class MainEndDrawer extends StatelessWidget {
                 child: Image.asset('assets/logo.png', height: 100, width: 100),
               ),
             ),
-            ListTile(
+       /*     ListTile(
               title: const Text('Analizlər'),
               onTap: () {
                 Navigator.pop(context);
                 context.push('/analyzes-doctor');
               },
-            ),
+            ), */
             /*  ListTile(
               title: const Text('Haqqımızda'),
               onTap: () {
@@ -46,7 +46,7 @@ class MainEndDrawer extends StatelessWidget {
               },
             ),
             ListTile(
-              title: const Text('Chat'),
+              title: const Text('Söhbətlər'),
               onTap: () {
                 Navigator.pop(context);
                 context.push('/chats');
@@ -60,7 +60,7 @@ class MainEndDrawer extends StatelessWidget {
                 context.push('/doctors');
               },
             ),
-            ListTile(
+        /*    ListTile(
               title: const Text("Aptekler"),
               onTap: () {
                 Navigator.pop(context);
@@ -73,14 +73,7 @@ class MainEndDrawer extends StatelessWidget {
                 Navigator.pop(context);
                 context.push('/clinics');
               },
-            ),
-            ListTile(
-              title: const Text("Favoritler"),
-              onTap: () {
-                Navigator.pop(context);
-                context.push('/favorites');
-              },
-            ),
+            ), */
 
             BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {

@@ -91,7 +91,7 @@ class _DoctorDetailPageState extends State<DoctorDetailPage> {
                               ),
                             ),
                             Text(
-                              "${doctor!.doctorCategory.title} | Klinika: ${doctor!.clinic?.anyOf.values[0] ?? 'Yoxdur'}",
+                              "${doctor!.doctorCategory.title} | Klinika: ${doctor!.clinic.toString()}",
                               style: TextStyle(
                                 fontSize: screenWidth * 0.03,
                                 color: Colors.grey,
@@ -149,8 +149,7 @@ class _DoctorDetailPageState extends State<DoctorDetailPage> {
                     const Divider(height: 32),
                     ExpandableText(
                       text:
-                          doctor!.abouts?.anyOf.values.entries.first.value
-                              .toString() ??
+                          doctor!.abouts?.toString() ??
                           'Haqqında məlumat yoxdur ',
                     ),
                     const SizedBox(height: 16),

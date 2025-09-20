@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:safatapp/components/reset_password_form.dart';
+import 'package:go_router/go_router.dart';
 
 class PasswordResetPage extends StatelessWidget {
   const PasswordResetPage({super.key, required this.email, required this.otp});
@@ -19,8 +21,10 @@ class PasswordResetPage extends StatelessWidget {
             Positioned(
               left: 10,
               top: 10,
-              child: GestureDetector(
-                onTap: () => Navigator.pop(context),
+              child:  GestureDetector(
+                onTap: () => {
+                  context.pop()
+                },
                 child: Container(
                   width: 40,
                   height: 40,
@@ -29,10 +33,8 @@ class PasswordResetPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Center(
-                    child: Image.network(
-                      'https://storage.googleapis.com/codeless-app.appspot.com/uploads%2Fimages%2F0S4Cv9GzpkFeQFL3zg0b%2Fbb416e60-3725-41c2-87ff-6d7c1c9e5ed6.png',
-                      width: 8,
-                      height: 18,
+                    child: SvgPicture.asset(
+                      'assets/icons/back.svg',
                       fit: BoxFit.contain,
                     ),
                   ),

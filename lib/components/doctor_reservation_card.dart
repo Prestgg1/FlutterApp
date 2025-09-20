@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:openapi/openapi.dart' as backend;
-
+/* TODO: Burası lazımsız*/
 class RatingTag extends StatelessWidget {
   final String rating;
 

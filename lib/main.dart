@@ -49,7 +49,6 @@ void main() async {
 
   final authBloc = AuthBloc()..add(AuthCheck());
   final appointmentBloc = AppointmentBloc();
-  print(1)
   runApp(
     MultiBlocProvider(
       providers: [
@@ -72,7 +71,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color.fromARGB(255, 34, 109, 100),
         ),
-      ),
+      ),  
 
       routerConfig: GoRouter(
         routes: [

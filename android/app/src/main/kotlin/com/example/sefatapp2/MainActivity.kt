@@ -1,4 +1,4 @@
-package com.example.sefatapp2
+package com.codimera.safatapp
 
 import io.flutter.embedding.android.FlutterActivity
 

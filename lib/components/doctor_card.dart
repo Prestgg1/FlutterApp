@@ -128,7 +128,7 @@ class _DoctorCardState extends State<DoctorCard> {
                 ),
               ),
               Text(
-                "Klinika: ${widget.doctor.clinic?.anyOf.values[0] ?? 'Yoxdur'}",
+                "Klinika: ${widget.doctor.clinic ?? 'Yoxdur'}",
                 style: const TextStyle(fontSize: 12, color: Colors.grey),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,

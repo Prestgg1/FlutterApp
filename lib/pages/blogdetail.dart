@@ -58,9 +58,9 @@ class _BlogDetailPageState extends State<BlogDetailPage> {
                         12,
                       ), // istədiyin radius dəyəri
                       child: Image.network(
-                        blog!.image?.anyOf.values.entries.first.value
-                                .toString() ??
-                            '',
+                        blog!.image
+                                .toString()
+                            ,
                         width: double.infinity,
                         height: 200,
                         fit: BoxFit.cover,

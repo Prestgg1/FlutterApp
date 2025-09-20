@@ -69,7 +69,7 @@ class _DoctorAppointmentPageState extends State<DoctorAppointmentPage> {
       {"label": "35\nMinit", "selected": false},
     ];
 
-    return SingleChildScrollView(
+    return Container(
       child: Center(
         child: Container(
           width: 430,
@@ -114,7 +114,7 @@ class _DoctorAppointmentPageState extends State<DoctorAppointmentPage> {
                  bu formada çıxmalıdır 2025-08-17T12:00:00Z formatında olmalıdır */
               const SizedBox(height: 15),
 
-              Align(
+           /*   Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'Xəbərdarlıq et',
@@ -135,9 +135,10 @@ class _DoctorAppointmentPageState extends State<DoctorAppointmentPage> {
                   );
                 }).toList(),
               ),
-              /* Burayı şimdilik boş ver.  */
+    
               const SizedBox(height: 10),
-
+  */
+              Spacer(), //Bu yazdigim spacer sayesinde uygulamam çözükyor
               SizedBox(
                 width: double.infinity,
                 height: 50,
@@ -152,7 +153,7 @@ class _DoctorAppointmentPageState extends State<DoctorAppointmentPage> {
                     final date = selectedDate ?? DateTime.now();
                     if (selectedTime == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Lütfen saat seçin")),
+                        const SnackBar(content: Text("Zəhmət olmasa saat seçin")),
                       );
                       return;
                     }
@@ -198,6 +199,7 @@ class _DoctorAppointmentPageState extends State<DoctorAppointmentPage> {
                   ),
                 ),
               ),
+              const SizedBox(height: 10)
             ],
           ),
         ),

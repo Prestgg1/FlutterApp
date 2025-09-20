@@ -170,9 +170,8 @@ class _ClinicDetailPageState extends State<ClinicDetailPage> {
                     const Divider(height: 32),
                     ExpandableText(
                       text:
-                          clinic!.about?.anyOf.values.entries.first.value
-                              .toString() ??
-                          'Haqqında məlumat yoxdur ',
+                          clinic!.about.toString().isNotEmpty ?
+                          clinic!.about.toString() : 'Haqqında məlumat yoxdur ',
                     ),
                     const SizedBox(height: 16),
                     Reviews(modelId: clinic!.id, model: "clinic"),

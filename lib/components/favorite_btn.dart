@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:openapi/openapi.dart' as backend;
 import 'package:safatapp/services/api.dart';
+import 'package:toastification/toastification.dart';
 
 class FavoriteBtn extends StatefulWidget {
   FavoriteBtn({
@@ -51,6 +52,11 @@ class _FavoriteBtnState extends State<FavoriteBtn> {
         setState(() {
           widget.isFavorite = !widget.isFavorite;
         });
+        toastification.show(
+          title: Text("Daxil olmalısınız!"),
+          type: ToastificationType.error,
+          autoCloseDuration: const Duration(seconds: 5),
+        );
       }
     });
   }

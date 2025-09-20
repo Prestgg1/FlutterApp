@@ -37,11 +37,11 @@ class HomePage extends StatelessWidget {
               child: AdBanner(),
             ),
             DoctorHorizontalList(),
-            SizedBox(height: 16),
+       /*     SizedBox(height: 16),
             ClinicHorizontalList(),
             SizedBox(height: 16),
             PharmaciesHorizontalList(),
-            SizedBox(height: 16),
+            SizedBox(height: 16), */
           ],
         ),
       ),

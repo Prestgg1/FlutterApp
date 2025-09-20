@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:safatapp/components/forget_password_form.dart';
+import 'package:go_router/go_router.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
   const ForgotPasswordPage({super.key});
@@ -16,19 +18,22 @@ class ForgotPasswordPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Geri butonu
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFEBEBEB),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Center(
-                  child: Image.network(
-                    'https://storage.googleapis.com/codeless-app.appspot.com/uploads%2Fimages%2F0S4Cv9GzpkFeQFL3zg0b%2F13d57a91-8644-44ea-923b-2a6d9b64ba8f.png',
-                    width: 8,
-                    height: 18,
-                    fit: BoxFit.contain,
+              GestureDetector(
+                onTap: () => {
+                  context.pop()
+                },
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFEBEBEB),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Center(
+                    child: SvgPicture.asset(
+                      'assets/icons/back.svg',
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),

@@ -73,7 +73,7 @@ class _BlogListPageState extends State<BlogListPage> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
       child: Image.network(
-        blog.image?.anyOf.values.entries.first.value.toString() ?? '',
+        blog.image!,
         width: 100,
         height: 100,
         fit: BoxFit.cover,

@@ -14,11 +14,11 @@ class FavoritesPage extends StatelessWidget {
           children: <Widget>[
             DoctorFavoritesHorizontalList(),
 
-            SizedBox(height: 16),
+       /*     SizedBox(height: 16),
             ClinicFavoriteHorizontalList(),
             SizedBox(height: 16),
             PharmaciesFavoriteHorizontalList(),
-            SizedBox(height: 16),
+            SizedBox(height: 16),  */
           ],
         ),
       ),

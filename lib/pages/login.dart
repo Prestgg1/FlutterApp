@@ -57,7 +57,7 @@ class LoginPage extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 16),
-                      SocialLogin(),
+                     /* SocialLogin() */
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[

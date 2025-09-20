@@ -43,6 +43,29 @@ class _DoctorsListPageState extends State<DoctorsListPage> {
       fetchDoctors();
     });
   }
+int _calculateCrossAxisCount(BuildContext context) {
+  double width = MediaQuery.of(context).size.width;
+
+  if (width >= 1200) {
+    return 4; // büyük ekranlar
+  } else if (width >= 800) {
+    return 3; // tablet
+  } else {
+    return 2; // mobile
+  }
+}
+
+double _calculateChildAspectRatio(BuildContext context) {
+  double width = MediaQuery.of(context).size.width;
+
+  if (width >= 1200) {
+    return 0.7;
+  } else if (width >= 350) {
+    return 0.75;
+  } else {
+    return 0.6;
+  }
+}
 
   Future<void> fetchDoctors() async {
     setState(() => loading = true);
@@ -92,21 +115,19 @@ class _DoctorsListPageState extends State<DoctorsListPage> {
                   ),
                 )
               : GridView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  itemCount: doctors.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
-                    childAspectRatio: MediaQuery.of(context).size.height > 850
-                        ? 0.75
-                        : 0.6,
-                  ),
-                  itemBuilder: (context, index) {
-                    final doctor = doctors[index];
-                    return DoctorCard(doctor: doctor);
-                  },
-                ),
+  padding: const EdgeInsets.symmetric(horizontal: 16),
+  itemCount: doctors.length,
+  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: _calculateCrossAxisCount(context),
+    crossAxisSpacing: 12,
+    mainAxisSpacing: 12,
+    childAspectRatio: _calculateChildAspectRatio(context),
+  ),
+  itemBuilder: (context, index) {
+    final doctor = doctors[index];
+    return DoctorCard(doctor: doctor);
+  },
+),
         ),
         SizedBox(height: 16),
       ],

@@ -157,7 +157,7 @@ class ReservationCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Text(
-                  'Konsultasiya xidməti: 60\nKlinika: ${item.clinic?.anyOf.values[0] ?? 'Yoxdur'}',
+                  'Konsultasiya xidməti: 60\nKlinika: ${item.clinic!.isNotEmpty ? item.clinic : 'Yoxdur'}',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.poppins(
                     fontSize: 9,

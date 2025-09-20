@@ -61,7 +61,7 @@ class _ReviewsState extends State<Reviews> {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ReviewInput(
+        /*  ReviewInput(
             onSend: (message, rating) {
               final authState = context.read<AuthBloc>().state;
               if (authState is! Authenticated) {
@@ -71,7 +71,7 @@ class _ReviewsState extends State<Reviews> {
             },
             modelId: widget.modelId,
             model: widget.model,
-          ),
+          ), */
           const SizedBox(height: 20),
           const Text("Hələki bir rəy yoxdur."),
         ],
@@ -81,7 +81,7 @@ class _ReviewsState extends State<Reviews> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ReviewInput(
+       /* ReviewInput(
           onSend: (message, rating) {
             final authState = context.read<AuthBloc>().state;
             if (authState is! Authenticated || authState.user == null) {
@@ -110,6 +110,7 @@ class _ReviewsState extends State<Reviews> {
           modelId: widget.modelId,
           model: widget.model,
         ),
+        */
         const SizedBox(height: 20),
         ...reviews.map(
           (r) => ReviewCard(

@@ -172,9 +172,8 @@ class _PharmacyDetailPageState extends State<PharmacyDetailPage> {
                     const Divider(height: 32),
                     ExpandableText(
                       text:
-                          pharmacy!.about?.anyOf.values.entries.first.value
-                              .toString() ??
-                          'Haqqında məlumat yoxdur ',
+                          pharmacy!.about
+                              .toString(),
                     ),
                     const SizedBox(height: 16),
                     Reviews(modelId: pharmacy!.id, model: "pharmacy"),

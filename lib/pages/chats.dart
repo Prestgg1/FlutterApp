@@ -104,11 +104,11 @@ class _ChatsListPageState extends State<ChatsListPage> {
                     otherUserId: chat.otherUserId!,
                     image: chat.otherUserImage,
                     lastMessage:
-                        chat.lastMessage?.anyOf?.values.entries.first.value
+                        chat.lastMessage
                             ?.toString() ??
                         "",
                     time: formatLastMessageTime(
-                      chat.lastMessageDate?.anyOf?.values.entries.first.value
+                      chat.lastMessageDate
                               ?.toString() ??
                           "",
                     ),

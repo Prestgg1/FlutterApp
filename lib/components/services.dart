@@ -9,9 +9,9 @@ class DoctorServices extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Flexible(
+   /*     Flexible(
           child: GestureDetector(
             onTap: () {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -39,9 +39,11 @@ class DoctorServices extends StatelessWidget {
               price: "₼ 50 AZN",
             ),
           ),
-        ),
+        ),  
         const SizedBox(width: 8),
-        Flexible(
+        */
+        
+        Center(
           child: GestureDetector(
             onTap: () {
               context.go('/doctor-appointment/$id');

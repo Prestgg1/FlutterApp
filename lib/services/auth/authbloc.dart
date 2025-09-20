@@ -50,8 +50,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         final response = await _api.getAuthApi().meApiAuthMeGet();
         final userBase =
-            response.data?.anyOf.values.entries.first.value
-                as backend.UserBase?;
+            response.data;
 
         emit(Authenticated(token, userBase));
       } catch (e) {

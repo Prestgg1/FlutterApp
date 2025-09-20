@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:safatapp/components/OtpInputSection.dart';
@@ -22,25 +23,25 @@ class OtpPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Geri butonu
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFEBEBEB),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Center(
-                      child: Image.network(
-                        'https://storage.googleapis.com/codeless-app.appspot.com/uploads%2Fimages%2F0S4Cv9GzpkFeQFL3zg0b%2F1da66731-d6b6-48bd-b902-9d54cedbe51a.png',
-                        width: 8,
-                        height: 18,
-                        fit: BoxFit.contain,
-                      ),
+               GestureDetector(
+                onTap: () => {
+                  context.pop()
+                },
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFEBEBEB),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Center(
+                    child: SvgPicture.asset(
+                      'assets/icons/back.svg',
+                      fit: BoxFit.contain,
                     ),
                   ),
                 ),
+              ),
                 const SizedBox(height: 40),
 
                 // Başlık

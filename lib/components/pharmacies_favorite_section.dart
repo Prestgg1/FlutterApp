@@ -7,7 +7,6 @@ import 'package:safatapp/services/api.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safatapp/services/auth/authbloc.dart';
-import 'package:safatapp/services/auth/authevent.dart';
 import 'package:safatapp/services/auth/authstate.dart';
 
 class PharmaciesFavoriteHorizontalList extends StatefulWidget {
